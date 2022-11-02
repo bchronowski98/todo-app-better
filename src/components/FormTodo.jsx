@@ -1,10 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 
-const FormTodo = ({ inputValue, onInputValueChange }) => {
+const FormTodo = ({ inputValue, setInputValue, todos, setTodos }) => {
+  function onAddTaskHandler(e) {
+    e.preventDefault();
+    if (inputValue) {
+      setTodos([...todos, inputValue]);
+      setInputValue("");
+    }
+  }
+
   return (
-    <form>
+    <form onSubmit={onAddTaskHandler}>
       <input
-        onChange={(e) => onInputValueChange(e.target.value)}
+        onChange={(e) => setInputValue(e.target.value)}
         value={inputValue}
         type="text"
         placeholder="Add task..."
