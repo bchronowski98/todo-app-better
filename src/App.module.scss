@@ -1,4 +1,22 @@
 .main {
   width: 50%;
-  margin: auto;
+  height: 50vh;
+
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+  border-radius: 1rem;
+
+  .content {
+    width: 80%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    .title {
+      margin-bottom: 2rem;
+      font-size: 3.5rem;
+      color: #ebebeb;
+    }
+  }
 }

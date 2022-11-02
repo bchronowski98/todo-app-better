@@ -8,13 +8,16 @@ function App() {
   const [inputValue, setInputValue] = useState("");
   return (
     <div className={styles.main}>
-      <FormTodo
-        inputValue={inputValue}
-        setInputValue={setInputValue}
-        todos={todos}
-        setTodos={setTodos}
-      />
-      <ListTodo todos={todos} />
+      <div className={styles.content}>
+        <h4 className={styles.title}>TASKS</h4>
+        <FormTodo
+          inputValue={inputValue}
+          setInputValue={setInputValue}
+          todos={todos}
+          setTodos={setTodos}
+        />
+        <ListTodo todos={todos} />
+      </div>
     </div>
   );
 }
