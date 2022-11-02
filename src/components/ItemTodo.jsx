@@ -1,22 +1,15 @@
 import React, { useState } from "react";
 import styles from "./ItemTodo.module.scss";
 
-const ItemTodo = ({ content }) => {
+const ItemTodo = ({ content, onClickDel }) => {
   const [isDone, setIsDone] = useState(false);
 
   function onTodoClick() {
-    console.log(content);
     setIsDone((state) => !state);
   }
-
   function onClickEdit(e) {
     e.stopPropagation();
     console.log("Tu bedzie edit?");
-  }
-
-  function onClickDel(e) {
-    e.stopPropagation();
-    console.log("Tu bedzie del?");
   }
 
   return (

@@ -1,11 +1,12 @@
 import React from "react";
 import styles from "./FormTodo.module.scss";
+import { nanoid } from "nanoid";
 
 const FormTodo = ({ inputValue, setInputValue, todos, setTodos }) => {
   function onAddTaskHandler(e) {
     e.preventDefault();
     if (inputValue) {
-      setTodos([...todos, inputValue]);
+      setTodos([...todos, { id: nanoid(3), content: inputValue }]);
       setInputValue("");
     }
   }
