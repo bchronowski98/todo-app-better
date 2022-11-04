@@ -10,12 +10,12 @@ const ItemTodo = ({ content, removeTodo, id }) => {
 
   return (
     <li
-      className={`${styles.todo} ${isDone ? styles.todoD : styles.todoN}`}
+      className={`${styles.todo} ${isDone ? styles.todoD : ""}`}
       onClick={onTodoClick}
     >
       <div className={styles.todoInside}>
         {content}
-        <div className="buttons">
+        <div>
           <button>EDIT</button>
           <button onClick={() => removeTodo(id)}>DEL</button>
         </div>

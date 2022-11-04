@@ -1,25 +1,18 @@
 .todo {
-  padding: 0.4rem;
-  border: 1px solid rgba(27, 31, 35, 0.15);
-  border-radius: 6px;
-  text-align: center;
-}
-
-.todoN {
-  margin-bottom: 0.6rem;
+  width: 100%;
   background: var(--primaryColor);
+  margin-bottom: 1rem;
+  border-radius: 0.25rem;
+
+  .todoInside {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.4rem 0.8rem;
+  }
 }
 
 .todoD {
-  margin-bottom: 0.2rem;
-  background: grey;
-
-  opacity: 0.4;
+  opacity: 0.7;
+  scale: 0.99;
   text-decoration: line-through;
-  transform: scale(0.97, 1);
-}
-
-.todoInside {
-  display: flex;
-  justify-content: space-between;
 }

@@ -1,27 +1,30 @@
 .main {
-  width: 50%;
-  height: 50vh;
-
+  width: 80%;
+  height: 80%;
   display: flex;
   justify-content: center;
-  padding: 2rem;
-  border-radius: 1rem;
+
+  @media (max-width: 600px) {
+    height: 100vh;
+    display: block;
+    margin-top: 5rem;
+  }
 
   .content {
-    width: 80%;
+    height: 100%;
     display: flex;
-    align-items: center;
     flex-direction: column;
+    align-items: center;
 
     .title {
-      margin-bottom: 2rem;
-      font-size: 3.5rem;
+      font-size: 3rem;
       color: var(--primaryColor);
+      margin-bottom: 2rem;
     }
-    .lista {
+
+    .todolist {
       list-style-type: none;
-      //font-size: 1.2rem;
-      min-width: 50%;
+      width: 90%;
     }
   }
 }

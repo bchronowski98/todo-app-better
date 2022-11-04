@@ -15,8 +15,7 @@ function App() {
   };
 
   const removeTodo = (id) => {
-    const updatedTodos = todos.filter((todo) => id !== todo.id);
-    setTodos(updatedTodos);
+    setTodos((prevTodos) => prevTodos.filter((todo) => id !== todo.id));
   };
 
   return (
@@ -24,7 +23,7 @@ function App() {
       <div className={styles.content}>
         <h4 className={styles.title}>TASKS</h4>
         <FormTodo addTodo={addTodo} />
-        <ul className={styles.lista}>
+        <ul className={styles.todolist}>
           {todos.map((todo) => {
             return (
               <ItemTodo
