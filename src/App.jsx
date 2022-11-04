@@ -5,7 +5,7 @@ import { nanoid } from "nanoid";
 import ItemTodo from "./components/ItemTodo.jsx";
 import GetWeather from "./components/GetWeather.jsx";
 
-//test
+//test2
 
 function App() {
   const [todos, setTodos] = useState([]);
