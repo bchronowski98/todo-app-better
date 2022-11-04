@@ -20,4 +20,13 @@ body {
   );
   font-family: -apple-system, system-ui, "Segoe UI", Helvetica, Arial,
     sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+
+  #root {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    --primaryColor: #fafbfc;
+    --secondaryColor: #cecece;
+  }
 }

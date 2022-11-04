@@ -5,20 +5,20 @@
   input {
     margin-right: 1rem;
     padding: 0.4rem 2rem 0.4rem 0.1rem;
-    background: #fafbfc;
+    background: var(--primaryColor);
     border: 1px solid rgba(27, 31, 35, 0.15);
     border-radius: 6px;
     &:focus {
-      outline: 1px #cecece solid;
+      outline: 1px var(--secondaryColor) solid;
     }
   }
   button {
     padding: 0.4rem 2rem;
-    background: #fafbfc;
+    background: var(--primaryColor);
     border: 1px solid rgba(27, 31, 35, 0.15);
     border-radius: 6px;
     &:hover {
-      background-color: #cecece;
+      background-color: var(--secondaryColor);
       text-decoration: none;
       transition-duration: 0.1s;
     }

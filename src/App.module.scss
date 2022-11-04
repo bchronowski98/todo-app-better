@@ -16,7 +16,12 @@
     .title {
       margin-bottom: 2rem;
       font-size: 3.5rem;
-      color: #ebebeb;
+      color: var(--primaryColor);
+    }
+    .lista {
+      list-style-type: none;
+      //font-size: 1.2rem;
+      min-width: 50%;
     }
   }
 }

@@ -1,18 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./FormTodo.module.scss";
-import { nanoid } from "nanoid";
 
-const FormTodo = ({ inputValue, setInputValue, todos, setTodos }) => {
-  function onAddTaskHandler(e) {
+const FormTodo = ({ addTodo }) => {
+  const [inputValue, setInputValue] = useState("");
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if (inputValue) {
-      setTodos([...todos, { id: nanoid(3), content: inputValue }]);
+    if (typeof inputValue === "string" && inputValue) {
+      addTodo(inputValue);
       setInputValue("");
     }
-  }
+  };
 
   return (
-    <form className={styles.main} onSubmit={onAddTaskHandler}>
+    <form className={styles.main} onSubmit={handleSubmit}>
       <input
         onChange={(e) => setInputValue(e.target.value)}
         value={inputValue}
