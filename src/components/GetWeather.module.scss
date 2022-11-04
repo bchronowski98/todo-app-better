@@ -1,0 +1,18 @@
+.main {
+  display: flex;
+  color: var(--primaryColor);
+  @media (max-width: 600px) {
+    display: none;
+  }
+
+  .info {
+    display: flex;
+    flex-direction: column;
+  }
+  .icons {
+    img {
+      width: 4rem;
+      height: 4rem;
+    }
+  }
+}

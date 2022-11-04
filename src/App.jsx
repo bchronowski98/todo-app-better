@@ -3,6 +3,7 @@ import FormTodo from "./components/FormTodo.jsx";
 import React, { useState } from "react";
 import { nanoid } from "nanoid";
 import ItemTodo from "./components/ItemTodo.jsx";
+import GetWeather from "./components/GetWeather.jsx";
 
 function App() {
   const [todos, setTodos] = useState([]);
@@ -36,6 +37,7 @@ function App() {
           })}
         </ul>
       </div>
+      <GetWeather />
     </div>
   );
 }
