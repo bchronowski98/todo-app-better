@@ -1,18 +1,41 @@
 .main {
-  display: flex;
   color: var(--primaryColor);
+  position: absolute;
+  top: 8.5%;
+  left: 70%;
   @media (max-width: 600px) {
-    display: none;
+    width: 100%;
+    display: block;
+    position: absolute;
+    top: 11%;
+    left: 0;
+    background: red;
+    z-index: 999;
   }
 
-  .info {
+  .card {
     display: flex;
-    flex-direction: column;
-  }
-  .icons {
-    img {
-      width: 4rem;
-      height: 4rem;
+    font-size: 2rem;
+    align-items: center;
+    @media (max-width: 600px) {
+      padding: 2rem 5rem;
     }
+    .info {
+      display: flex;
+      flex-direction: column;
+    }
+    .icons {
+      padding: 1rem;
+      img {
+        width: 4rem;
+        height: 4rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .toggled {
+    display: none;
   }
 }
