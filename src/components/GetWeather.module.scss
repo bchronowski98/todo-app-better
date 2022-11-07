@@ -1,0 +1,44 @@
+.main {
+  color: var(--primaryColor);
+  position: absolute;
+  top: 8.5%;
+  left: 70%;
+  @media (max-width: 600px) {
+    width: 100%;
+    display: block;
+    position: absolute;
+    top: 11%;
+    left: 0;
+    background: red;
+    z-index: 999;
+  }
+
+  .card {
+    display: flex;
+    font-size: 2rem;
+    align-items: center;
+    @media (max-width: 600px) {
+      padding: 2rem 5rem;
+    }
+    .info {
+      display: flex;
+      flex-direction: column;
+    }
+    .icons {
+      padding: 1rem;
+      svg {
+        width: 4rem;
+        height: 4rem;
+        path {
+          fill: blue;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .toggled {
+    display: none;
+  }
+}
