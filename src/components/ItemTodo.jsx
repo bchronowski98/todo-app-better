@@ -21,10 +21,12 @@ const ItemTodo = ({ content, removeTodo, id, editTodo }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    editTodo(e, id, newTodo);
-    setNewTodo("");
-    setIsEditing(false);
-    setIsDone(false);
+    if (typeof newTodo === "string" && newTodo) {
+      editTodo(e, id, newTodo);
+      setNewTodo("");
+      setIsEditing(false);
+      setIsDone(false);
+    }
   };
 
   const normalTemplate = (
