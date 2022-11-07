@@ -28,14 +28,14 @@ function App() {
   };
 
   const editTodo = (e, id, newTodo) => {
-    const editedTodoList = todos.map((todo) => {
-      if (id === todo.id) {
-        return { ...todo, content: newTodo };
-      }
-      return todo;
-    });
-    setTodos(editedTodoList);
-    console.log(todos);
+    setTodos((prevTodos) =>
+      prevTodos.map((todo) => {
+        if (id === todo.id) {
+          return { ...todo, content: newTodo };
+        }
+        return todo;
+      })
+    );
   };
   return (
     <div className={styles.main}>
