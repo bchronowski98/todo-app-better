@@ -23,11 +23,18 @@
       color: var(--primaryColor);
       margin-bottom: 2rem;
       button {
+        padding: 0.2rem;
         font-size: 1rem;
-        background: var(--primaryColor);
-        img {
+        background: none;
+        border: 2px solid var(--primaryColor);
+        border-radius: 6px;
+
+        svg {
           width: 3rem;
           height: 3rem;
+          path {
+            fill: (var(--primaryColor));
+          }
         }
         @media (min-width: 600px) {
           display: none;
@@ -37,7 +44,7 @@
 
     .todolist {
       list-style-type: none;
-      width: 90%;
+      width: 86%;
     }
   }
 }

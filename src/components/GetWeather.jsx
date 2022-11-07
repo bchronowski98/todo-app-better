@@ -25,7 +25,7 @@ const GetWeather = ({ toggle, toggleWeather }) => {
       <div className={styles.card}>
         <div className={styles.info}>
           <h4>Krakow</h4>
-          <h4>{Math.round(data.temperature * 10) / 10}&deg;</h4>
+          <h4>{Number.parseFloat(data.temperature).toFixed(1)}&deg;</h4>
         </div>
         <div className={styles.icons}>
           {data.precipitation > rainTreshold ? <Sunny /> : <Rain />}

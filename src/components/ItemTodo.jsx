@@ -15,9 +15,9 @@ const ItemTodo = ({ content, removeTodo, id }) => {
     >
       <div className={styles.todoInside}>
         {content}
-        <div>
-          <button>EDIT</button>
-          <button onClick={() => removeTodo(id)}>DEL</button>
+        <div className={styles.todoButtons}>
+          <button>edit</button>
+          <button onClick={() => removeTodo(id)}>del</button>
         </div>
       </div>
     </li>

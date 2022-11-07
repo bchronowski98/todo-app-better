@@ -1,24 +1,27 @@
 .main {
   color: var(--primaryColor);
-  position: absolute;
-  top: 8.5%;
-  left: 70%;
+
   @media (max-width: 600px) {
-    width: 100%;
-    display: block;
+    width: 90%;
     position: absolute;
     top: 11%;
-    left: 0;
-    background: red;
+    background: var(--secondaryColor);
     z-index: 999;
+    border-radius: 6px;
   }
 
   .card {
     display: flex;
     font-size: 2rem;
     align-items: center;
+    background: rgba(#cecece, 0.5);
+    border-radius: 6px;
+    padding-left: 1rem;
+
     @media (max-width: 600px) {
       padding: 2rem 5rem;
+      color: black;
+      margin-top: 0;
     }
     .info {
       display: flex;
@@ -26,12 +29,27 @@
     }
     .icons {
       padding: 1rem;
+
       svg {
         width: 4rem;
         height: 4rem;
         path {
-          fill: blue;
+          fill: var(--primaryColor);
+          @media (max-width: 600px) {
+            fill: black;
+          }
         }
+      }
+    }
+    button {
+      border: 2px solid black;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      svg {
+        width: 2rem;
+        height: 2rem;
       }
     }
   }

@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { nanoid } from "nanoid";
 import ItemTodo from "./components/ItemTodo.jsx";
 import GetWeather from "./components/GetWeather.jsx";
-import ToggleButton from "./assets/day-sunny.svg";
+import { ReactComponent as ToggleButton } from "./assets/day-sunny.svg";
 
 function App() {
   const [todos, setTodos] = useState([]);
@@ -33,7 +33,7 @@ function App() {
           <h4>TASKS</h4>
           {!toggle && (
             <button onClick={toggleWeather}>
-              <img src={ToggleButton} alt="toggle-button" />
+              <ToggleButton />
             </button>
           )}
         </div>
