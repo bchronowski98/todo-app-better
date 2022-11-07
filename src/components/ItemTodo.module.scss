@@ -3,18 +3,25 @@
   background: var(--primaryColor);
   margin-bottom: 1rem;
   border-radius: 0.25rem;
+  button {
+    margin-right: 0.2rem;
+    padding-right: 0.2rem;
+    padding-left: 0.2rem;
+    border-radius: 0.25rem;
+  }
 
   .todoInside {
     display: flex;
     justify-content: space-between;
     padding: 0.4rem 0.8rem;
-    .todoButtons {
-      button {
-        margin-right: 0.2rem;
-        padding-right: 0.2rem;
-        padding-left: 0.2rem;
-        border-radius: 0.25rem;
-      }
+  }
+
+  .editForm {
+    width: 100%;
+    .todoEditInside {
+      display: flex;
+      padding: 0.4rem 0.8rem;
+      justify-content: space-between;
     }
   }
 }

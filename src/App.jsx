@@ -26,6 +26,17 @@ function App() {
   const removeTodo = (id) => {
     setTodos((prevTodos) => prevTodos.filter((todo) => id !== todo.id));
   };
+
+  const editTodo = (e, id, newTodo) => {
+    const editedTodoList = todos.map((todo) => {
+      if (id === todo.id) {
+        return { ...todo, content: newTodo };
+      }
+      return todo;
+    });
+    setTodos(editedTodoList);
+    console.log(todos);
+  };
   return (
     <div className={styles.main}>
       <div className={styles.content}>
@@ -46,6 +57,7 @@ function App() {
                 id={todo.id}
                 content={todo.content}
                 removeTodo={removeTodo}
+                editTodo={editTodo}
               />
             );
           })}
