@@ -40,8 +40,7 @@ function App() {
   return (
     <div className={styles.main}>
       <div className={styles.content}>
-        <div className={styles.title}>
-          <h4>TASKS</h4>
+        <div className={styles.weather}>
           {!toggle && (
             <button onClick={toggleWeather}>
               <ToggleButton />
@@ -49,19 +48,30 @@ function App() {
           )}
         </div>
         <FormTodo addTodo={addTodo} />
-        <ul className={styles.todolist}>
-          {todos.map((todo) => {
-            return (
-              <ItemTodo
-                key={todo.id}
-                id={todo.id}
-                content={todo.content}
-                removeTodo={removeTodo}
-                editTodo={editTodo}
-              />
-            );
-          })}
-        </ul>
+        <div className={styles.taskSection}>
+          <h4 className={styles.title}>Tasks</h4>
+          <div className={styles.ulWrapper}>
+            <div className={styles.titleRow}>
+              <div className={styles.titleText}>
+                <h5>Task</h5>
+                <h5>Status</h5>
+              </div>
+            </div>
+            <ul className={styles.todolist}>
+              {todos.map((todo) => {
+                return (
+                  <ItemTodo
+                    key={todo.id}
+                    id={todo.id}
+                    content={todo.content}
+                    removeTodo={removeTodo}
+                    editTodo={editTodo}
+                  />
+                );
+              })}
+            </ul>
+          </div>
+        </div>
       </div>
       <GetWeather toggle={toggle} toggleWeather={toggleWeather} />
     </div>

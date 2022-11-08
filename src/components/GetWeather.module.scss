@@ -1,26 +1,30 @@
 .main {
-  color: var(--primaryColor);
+  color: var(--textBlackColor);
+  width: 30%;
 
   @media (max-width: 600px) {
-    width: 90%;
+    width: 96%;
     position: absolute;
     top: 11%;
-    background: var(--secondaryColor);
+    background: rgba(255, 255, 255, 0.7);
     z-index: 999;
     border-radius: 6px;
+    border: 2px solid var(--textBlackColor);
   }
 
   .card {
     display: flex;
     font-size: 2rem;
     align-items: center;
-    background: rgba(#cecece, 0.5);
+    background: var(--glassMorph);
     border-radius: 6px;
-    padding-left: 1rem;
+    justify-content: center;
+    color: var(--textGreyColor);
 
     @media (max-width: 600px) {
       padding: 2rem 5rem;
-      color: black;
+      color: var(--textBlackColor);
+      background: var(--primaryColor);
       margin-top: 0;
     }
     .info {
@@ -34,9 +38,9 @@
         width: 4rem;
         height: 4rem;
         path {
-          fill: var(--primaryColor);
+          fill: var(--textBlackColor);
           @media (max-width: 600px) {
-            fill: black;
+            fill: var(--textBlackColor);
           }
         }
       }
