@@ -1,6 +1,6 @@
 import styles from "./App.module.scss";
 import FormTodo from "./components/FormTodo.jsx";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { nanoid } from "nanoid";
 import ItemTodo from "./components/ItemTodo.jsx";
 import GetWeather from "./components/GetWeather.jsx";
@@ -27,7 +27,7 @@ function App() {
     setTodos((prevTodos) => prevTodos.filter((todo) => id !== todo.id));
   };
 
-  const editTodo = (e, id, newTodo) => {
+  const editTodo = (id, newTodo) => {
     setTodos((prevTodos) =>
       prevTodos.map((todo) => {
         if (id === todo.id) {
@@ -37,15 +37,18 @@ function App() {
       })
     );
   };
+
   return (
     <div className={styles.main}>
       <div className={styles.content}>
-        <div className={styles.weather}>
-          {!toggle && (
+        <div
+          className={`${styles.weather} ${toggle ? styles.weatherHidden : ""}`}
+        >
+          {
             <button onClick={toggleWeather}>
               <ToggleButton />
             </button>
-          )}
+          }
         </div>
         <FormTodo addTodo={addTodo} />
         <div className={styles.taskSection}>

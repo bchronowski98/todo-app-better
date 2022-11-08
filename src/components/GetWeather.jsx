@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./GetWeather.module.scss";
 import { ReactComponent as Sunny } from "../assets/day-sunny.svg";
 import { ReactComponent as Rain } from "../assets/rain.svg";
