@@ -9,6 +9,7 @@ import { ReactComponent as ToggleButton } from "./assets/day-sunny.svg";
 function App() {
   const [todos, setTodos] = useState([]);
   const [toggle, setToggle] = useState(false);
+  const [editId, setEditId] = useState("");
   const outsideClickRef = useRef();
 
   useEffect(() => {
@@ -50,6 +51,8 @@ function App() {
     setTodos((prevTodos) =>
       prevTodos.map((todo) => {
         if (id === todo.id) {
+          console.log(editId);
+          console.log(id);
           return { ...todo, content: newTodo };
         }
         return todo;
@@ -88,6 +91,8 @@ function App() {
                     content={todo.content}
                     removeTodo={removeTodo}
                     editTodo={editTodo}
+                    setEditId={setEditId}
+                    editId={editId}
                   />
                 );
               })}

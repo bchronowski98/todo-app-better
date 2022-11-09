@@ -1,24 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import styles from "./ItemTodo.module.scss";
 import { ReactComponent as Del } from "../assets/delete.svg";
 import { ReactComponent as Edit } from "../assets/edit.svg";
 import { ReactComponent as Xsign } from "../assets/x-sign.svg";
 import { ReactComponent as Ok } from "../assets/ok.svg";
 
-const ItemTodo = ({ content, removeTodo, id, editTodo }) => {
+const ItemTodo = ({ content, removeTodo, id, editTodo, setEditId, editId }) => {
   const [isDone, setIsDone] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [newTodo, setNewTodo] = useState("");
+  const refTodoInside = useRef();
+  const refIcons = useRef();
 
-  const onTodoClick = () => {
-    setIsDone((state) => !state);
+  const onTodoClick = (e) => {
+    console.log(refTodoInside.current);
+    console.log(refIcons.current);
+    if (
+      refTodoInside.current.contains(e.target) &&
+      !refIcons.current.contains(e.target)
+    ) {
+      setIsDone((state) => !state);
+    }
   };
 
   const editStateOnClick = (e) => {
-    e.stopPropagation();
     setIsEditing((prevState) => !prevState);
     setIsDone(false);
     setNewTodo(content);
+    setEditId(id);
   };
 
   const handleEdit = (e) => {
@@ -40,11 +49,11 @@ const ItemTodo = ({ content, removeTodo, id, editTodo }) => {
       className={`${styles.todo} ${isDone ? styles.todoD : ""}`}
       onClick={onTodoClick}
     >
-      <div className={styles.todoInside}>
+      <div ref={refTodoInside} className={styles.todoInside}>
         {content}
         <div className={styles.statusButtons}>
           <h5>{isDone ? "Complete" : "Pending"}</h5>
-          <div className={styles.icons}>
+          <div ref={refIcons} className={styles.icons}>
             <button onClick={editStateOnClick}>
               <Edit />
             </button>
@@ -83,7 +92,7 @@ const ItemTodo = ({ content, removeTodo, id, editTodo }) => {
     </li>
   );
 
-  return <>{isEditing ? editTemplate : normalTemplate}</>;
+  return <>{isEditing && editId === id ? editTemplate : normalTemplate}</>;
 };
 
 export default ItemTodo;
