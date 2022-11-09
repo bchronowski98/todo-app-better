@@ -22,7 +22,9 @@ const FormTodo = ({ addTodo }) => {
         maxLength="20"
       />
 
-      <button type="submit">+</button>
+      <button tabIndex="1" type="submit">
+        +
+      </button>
     </form>
   );
 };
