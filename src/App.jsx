@@ -1,6 +1,6 @@
 import styles from "./App.module.scss";
 import FormTodo from "./components/FormTodo.jsx";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { nanoid } from "nanoid";
 import ItemTodo from "./components/ItemTodo.jsx";
 import GetWeather from "./components/GetWeather.jsx";
@@ -9,6 +9,25 @@ import { ReactComponent as ToggleButton } from "./assets/day-sunny.svg";
 function App() {
   const [todos, setTodos] = useState([]);
   const [toggle, setToggle] = useState(false);
+  const outsideClickRef = useRef();
+
+  useEffect(() => {
+    const clickOutside = (e) => {
+      if (!outsideClickRef.current.contains(e.target)) {
+        console.log(outsideClickRef.current);
+        console.log(e.target);
+        setToggle((prevState) => !prevState);
+      }
+    };
+    if (toggle) {
+      console.log(outsideClickRef);
+      document.addEventListener("mousedown", clickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", clickOutside);
+    };
+  }, [toggle]);
 
   const addTodo = (todoObject) => {
     setTodos((prevTodos) => [
@@ -76,7 +95,11 @@ function App() {
           </div>
         </div>
       </div>
-      <GetWeather toggle={toggle} toggleWeather={toggleWeather} />
+      <GetWeather
+        ref={outsideClickRef}
+        toggle={toggle}
+        toggleWeather={toggleWeather}
+      />
     </div>
   );
 }

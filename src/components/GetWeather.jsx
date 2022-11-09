@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, forwardRef } from "react";
 import styles from "./GetWeather.module.scss";
 import { ReactComponent as Sunny } from "../assets/day-sunny.svg";
 import { ReactComponent as Rain } from "../assets/rain.svg";
@@ -9,7 +9,7 @@ const url = "https://live-weather.deno.dev";
 const cracowWeather = "/city?Cracow";
 const rainTreshold = 0.7;
 
-const GetWeather = ({ toggle, toggleWeather }) => {
+const GetWeather = forwardRef(({ toggle, toggleWeather }, ref) => {
   const { data, loading, error } = useFetch(url + cracowWeather);
 
   if (loading) {
@@ -21,7 +21,7 @@ const GetWeather = ({ toggle, toggleWeather }) => {
   }
 
   return (
-    <div className={`${styles.main} ${toggle ? "" : styles.toggled}`}>
+    <div ref={ref} className={`${styles.main} ${toggle ? "" : styles.toggled}`}>
       <div className={styles.card}>
         <div className={styles.info}>
           <h4>Krakow</h4>
@@ -38,6 +38,6 @@ const GetWeather = ({ toggle, toggleWeather }) => {
       </div>
     </div>
   );
-};
+});
 
 export default GetWeather;
