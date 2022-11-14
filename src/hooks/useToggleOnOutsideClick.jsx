@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-const useOutsideClick = (ref, handler, setHandler) => {
+const useToggleOnOutsideClick = (ref, handler, setHandler) => {
   useEffect(() => {
     const clickOutside = (e) => {
       if (!ref.current.contains(e.target)) {
@@ -17,4 +17,4 @@ const useOutsideClick = (ref, handler, setHandler) => {
   }, [handler]);
 };
 
-export default useOutsideClick;
+export default useToggleOnOutsideClick;

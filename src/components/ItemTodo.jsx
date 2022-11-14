@@ -8,7 +8,6 @@ const ItemTodo = ({ content, removeTodo, id, editTodo, setEditId, editId }) => {
   const [newTodo, setNewTodo] = useState("");
   const refTodoInside = useRef();
   const refIcons = useRef();
-  const ref = useRef({ refIcons, refTodoInside });
 
   const onTodoClick = (e) => {
     if (
@@ -61,7 +60,8 @@ const ItemTodo = ({ content, removeTodo, id, editTodo, setEditId, editId }) => {
           editStateOnClick={editStateOnClick}
           removeTodo={removeTodo}
           id={id}
-          ref={ref}
+          refIcons={refIcons}
+          refTodoInside={refTodoInside}
         />
       )}
     </>

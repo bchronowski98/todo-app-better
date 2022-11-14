@@ -1,16 +1,19 @@
-import React, { forwardRef } from "react";
+import React, { useRef } from "react";
 import styles from "./GetWeather.module.scss";
 import { ReactComponent as Sunny } from "../assets/day-sunny.svg";
 import { ReactComponent as Rain } from "../assets/rain.svg";
 import { ReactComponent as XSign } from "../assets/x-sign.svg";
 import useFetch from "../hooks/useFetch.js";
+import useToggleOnOutsideClick from "../hooks/useToggleOnOutsideClick.jsx";
 
 const url = "https://live-weather.deno.dev";
 const cracowWeather = "/city?Cracow";
 const rainTreshold = 0.7;
 
-const GetWeather = forwardRef(({ toggle, toggleWeather }, ref) => {
+const GetWeather = ({ toggle, setToggle, toggleWeather }) => {
   const { data, loading, error } = useFetch(url + cracowWeather);
+  const ref = useRef();
+  useToggleOnOutsideClick(ref, toggle, setToggle);
 
   if (loading) {
     return <p>loading...</p>;
@@ -38,6 +41,6 @@ const GetWeather = forwardRef(({ toggle, toggleWeather }, ref) => {
       </div>
     </div>
   );
-});
+};
 
 export default GetWeather;
