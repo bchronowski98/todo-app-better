@@ -9,9 +9,10 @@ const useFetch = (url) => {
     const loadData = async () => {
       try {
         const res = await fetch(url);
-        const data = await res.json();
-        setData(data);
+        const data1 = await res.json();
+        setData(data1);
         setLoading(false);
+        console.log(data1);
       } catch (e) {
         setError(e);
         setLoading(false);
