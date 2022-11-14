@@ -1,10 +1,11 @@
 import styles from "./App.module.scss";
 import FormTodo from "./components/FormTodo.jsx";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { nanoid } from "nanoid";
 import ItemTodo from "./components/ItemTodo.jsx";
 import GetWeather from "./components/GetWeather.jsx";
 import { ReactComponent as ToggleButton } from "./assets/day-sunny.svg";
+import useOutsideClick from "./hooks/useOutsideClick.jsx";
 
 function App() {
   const [todos, setTodos] = useState([]);
@@ -12,23 +13,7 @@ function App() {
   const [editId, setEditId] = useState("");
   const outsideClickRef = useRef();
 
-  useEffect(() => {
-    const clickOutside = (e) => {
-      if (!outsideClickRef.current.contains(e.target)) {
-        console.log(outsideClickRef.current);
-        console.log(e.target);
-        setToggle((prevState) => !prevState);
-      }
-    };
-    if (toggle) {
-      console.log(outsideClickRef);
-      document.addEventListener("mousedown", clickOutside);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", clickOutside);
-    };
-  }, [toggle]);
+  useOutsideClick(outsideClickRef, toggle, setToggle);
 
   const addTodo = (todoObject) => {
     setTodos((prevTodos) => [
@@ -40,7 +25,6 @@ function App() {
   const toggleWeather = (e) => {
     e.preventDefault();
     setToggle((prevState) => !prevState);
-    console.log(toggle);
   };
 
   const removeTodo = (id) => {
@@ -51,8 +35,6 @@ function App() {
     setTodos((prevTodos) =>
       prevTodos.map((todo) => {
         if (id === todo.id) {
-          console.log(editId);
-          console.log(id);
           return { ...todo, content: newTodo };
         }
         return todo;
@@ -67,7 +49,7 @@ function App() {
           className={`${styles.weather} ${toggle ? styles.weatherHidden : ""}`}
         >
           {
-            <button onClick={toggleWeather}>
+            <button type="button" onClick={toggleWeather}>
               <ToggleButton />
             </button>
           }

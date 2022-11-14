@@ -1,4 +1,4 @@
-import React, { useState, useEffect, forwardRef } from "react";
+import React, { forwardRef } from "react";
 import styles from "./GetWeather.module.scss";
 import { ReactComponent as Sunny } from "../assets/day-sunny.svg";
 import { ReactComponent as Rain } from "../assets/rain.svg";
@@ -31,7 +31,7 @@ const GetWeather = forwardRef(({ toggle, toggleWeather }, ref) => {
           {data.precipitation > rainTreshold ? <Sunny /> : <Rain />}
         </div>
         {toggle && (
-          <button onClick={toggleWeather}>
+          <button type="button" onClick={toggleWeather}>
             <XSign />
           </button>
         )}

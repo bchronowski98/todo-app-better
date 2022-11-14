@@ -1,9 +1,6 @@
 import React, { useState, useRef } from "react";
-import styles from "./ItemTodo.module.scss";
-import { ReactComponent as Del } from "../assets/delete.svg";
-import { ReactComponent as Edit } from "../assets/edit.svg";
-import { ReactComponent as Xsign } from "../assets/x-sign.svg";
-import { ReactComponent as Ok } from "../assets/ok.svg";
+import NormalTodoTemplate from "./NormalTodoTemplate.jsx";
+import EditTodoTemplate from "./EditTodoTemplate.jsx";
 
 const ItemTodo = ({ content, removeTodo, id, editTodo, setEditId, editId }) => {
   const [isDone, setIsDone] = useState(false);
@@ -11,19 +8,21 @@ const ItemTodo = ({ content, removeTodo, id, editTodo, setEditId, editId }) => {
   const [newTodo, setNewTodo] = useState("");
   const refTodoInside = useRef();
   const refIcons = useRef();
+  const ref = useRef({ refIcons, refTodoInside });
 
   const onTodoClick = (e) => {
-    console.log(refTodoInside.current);
-    console.log(refIcons.current);
     if (
       refTodoInside.current.contains(e.target) &&
       !refIcons.current.contains(e.target)
     ) {
-      setIsDone((state) => !state);
+      setIsDone((prevState) => !prevState);
+    }
+    if (e.key === "Enter") {
+      setIsDone((prevState) => !prevState);
     }
   };
 
-  const editStateOnClick = (e) => {
+  const editStateOnClick = () => {
     setIsEditing((prevState) => !prevState);
     setIsDone(false);
     setNewTodo(content);
@@ -44,55 +43,29 @@ const ItemTodo = ({ content, removeTodo, id, editTodo, setEditId, editId }) => {
     }
   };
 
-  const normalTemplate = (
-    <li
-      className={`${styles.todo} ${isDone ? styles.todoD : ""}`}
-      onClick={onTodoClick}
-    >
-      <div ref={refTodoInside} className={styles.todoInside}>
-        {content}
-        <div className={styles.statusButtons}>
-          <h5>{isDone ? "Complete" : "Pending"}</h5>
-          <div ref={refIcons} className={styles.icons}>
-            <button onClick={editStateOnClick}>
-              <Edit />
-            </button>
-            <button onClick={() => removeTodo(id)}>
-              <Del />
-            </button>
-          </div>
-        </div>
-      </div>
-    </li>
+  return (
+    <>
+      {isEditing && editId === id ? (
+        <EditTodoTemplate
+          handleSubmit={handleSubmit}
+          handleEdit={handleEdit}
+          newTodo={newTodo}
+          editStateOnClick={editStateOnClick}
+          id={id}
+        />
+      ) : (
+        <NormalTodoTemplate
+          onTodoClick={onTodoClick}
+          isDone={isDone}
+          content={content}
+          editStateOnClick={editStateOnClick}
+          removeTodo={removeTodo}
+          id={id}
+          ref={ref}
+        />
+      )}
+    </>
   );
-
-  const editTemplate = (
-    <li className={styles.todo}>
-      <form className={styles.editForm} onSubmit={handleSubmit}>
-        <div className={styles.todoEditInside}>
-          <input
-            id={id}
-            type="text"
-            onChange={handleEdit}
-            value={newTodo}
-            placeholder="Edit todo..."
-            autoFocus={true}
-            maxLength="20"
-          />
-          <div className={styles.editButtons}>
-            <button type="submit">
-              <Ok />
-            </button>
-            <button onClick={editStateOnClick}>
-              <Xsign />
-            </button>
-          </div>
-        </div>
-      </form>
-    </li>
-  );
-
-  return <>{isEditing && editId === id ? editTemplate : normalTemplate}</>;
 };
 
 export default ItemTodo;
