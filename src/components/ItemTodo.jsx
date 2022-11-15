@@ -1,31 +1,31 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import NormalTodoTemplate from "./NormalTodoTemplate.jsx";
 import EditTodoTemplate from "./EditTodoTemplate.jsx";
 
 const ItemTodo = ({ content, removeTodo, id, editTodo, setEditId, editId }) => {
   const [isDone, setIsDone] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
   const [newTodo, setNewTodo] = useState("");
-  const refTodoInside = useRef();
-  const refIcons = useRef();
 
-  const onTodoClick = (e) => {
-    if (
-      refTodoInside.current.contains(e.target) &&
-      !refIcons.current.contains(e.target)
-    ) {
-      setIsDone((prevState) => !prevState);
-    }
+  const onTodoClick = () => {
+    setIsDone((prevState) => !prevState);
+  };
+
+  const onTodoKeyDown = (e) => {
     if (e.key === "Enter") {
       setIsDone((prevState) => !prevState);
     }
   };
 
   const editStateOnClick = () => {
-    setIsEditing((prevState) => !prevState);
     setIsDone(false);
     setNewTodo(content);
     setEditId(id);
+  };
+
+  const cancelStateOnClick = () => {
+    setIsDone(false);
+    setNewTodo(content);
+    setEditId("");
   };
 
   const handleEdit = (e) => {
@@ -37,19 +37,19 @@ const ItemTodo = ({ content, removeTodo, id, editTodo, setEditId, editId }) => {
     if (typeof newTodo === "string" && newTodo) {
       editTodo(id, newTodo);
       setNewTodo("");
-      setIsEditing(false);
       setIsDone(false);
+      setEditId("");
     }
   };
 
   return (
     <>
-      {isEditing && editId === id ? (
+      {editId === id ? (
         <EditTodoTemplate
           handleSubmit={handleSubmit}
           handleEdit={handleEdit}
           newTodo={newTodo}
-          editStateOnClick={editStateOnClick}
+          cancelStateOnClick={cancelStateOnClick}
           id={id}
         />
       ) : (
@@ -60,8 +60,7 @@ const ItemTodo = ({ content, removeTodo, id, editTodo, setEditId, editId }) => {
           editStateOnClick={editStateOnClick}
           removeTodo={removeTodo}
           id={id}
-          refIcons={refIcons}
-          refTodoInside={refTodoInside}
+          onTodoKeyDown={onTodoKeyDown}
         />
       )}
     </>

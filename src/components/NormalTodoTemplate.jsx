@@ -10,21 +10,20 @@ const NormalTodoTemplate = ({
   editStateOnClick,
   removeTodo,
   id,
-  refIcons,
-  refTodoInside,
+  onTodoKeyDown,
 }) => {
   return (
     <li
       className={`${styles.todo} ${isDone ? styles.todoD : ""}`}
       onClick={onTodoClick}
-      onKeyDown={onTodoClick}
+      onKeyDown={onTodoKeyDown}
       tabIndex="0"
     >
-      <div ref={refTodoInside} className={styles.todoInside}>
+      <div className={styles.todoInside}>
         {content}
         <div className={styles.statusButtons}>
           <h5>{isDone ? "Complete" : "Pending"}</h5>
-          <div ref={refIcons} className={styles.icons}>
+          <div className={styles.icons}>
             <button type="button" onClick={editStateOnClick}>
               <Edit />
             </button>

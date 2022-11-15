@@ -7,7 +7,7 @@ const EditTodoTemplate = ({
   handleSubmit,
   handleEdit,
   newTodo,
-  editStateOnClick,
+  cancelStateOnClick,
   id,
 }) => {
   return (
@@ -27,7 +27,7 @@ const EditTodoTemplate = ({
             <button type="submit">
               <Ok />
             </button>
-            <button type="button" onClick={editStateOnClick}>
+            <button type="button" onClick={cancelStateOnClick}>
               <Xsign />
             </button>
           </div>
