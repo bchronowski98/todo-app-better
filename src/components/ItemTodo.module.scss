@@ -1,18 +1,81 @@
 .todo {
   width: 100%;
   background: var(--primaryColor);
-  margin-bottom: 1rem;
-  border-radius: 0.25rem;
+
+  button {
+    margin-right: 0.2rem;
+    padding-right: 0.2rem;
+    padding-left: 0.2rem;
+    border-radius: 0.25rem;
+  }
 
   .todoInside {
+    font-size: 0.875rem;
     display: flex;
     justify-content: space-between;
-    padding: 0.4rem 0.8rem;
+    align-content: center;
+    align-items: center;
+    padding: 0.5rem 1.5rem;
+    .statusButtons {
+      width: 40%;
+      display: flex;
+      justify-content: space-between;
+      align-content: center;
+      align-items: center;
+      .icons {
+        width: 30%;
+        display: flex;
+        justify-content: space-between;
+        h5 {
+          font-size: 0.9rem;
+          font-weight: normal;
+        }
+
+        svg {
+          height: 1.3rem;
+          width: 1.3rem;
+        }
+      }
+    }
+  }
+
+  .editForm {
+    width: 100%;
+    font-size: 0.9rem;
+    .todoEditInside {
+      display: flex;
+      padding: 0.4rem 1.2rem;
+      justify-content: space-between;
+      .editButtons {
+        margin-right: 0.1rem;
+        width: 12%;
+        display: flex;
+        justify-content: space-between;
+        @media (max-width: 600px) {
+          width: 20%;
+        }
+        svg {
+          height: 1.6rem;
+          width: 1.6rem;
+        }
+      }
+
+      input {
+        border: 1px solid var(--textGreyColor);
+        border-radius: 6px;
+        background: var(--primaryColor);
+        padding-left: 0.5rem;
+        padding-right: 4rem;
+        width: 70%;
+        @media (max-width: 600px) {
+          width: 40%;
+        }
+      }
+    }
   }
 }
 
 .todoD {
-  opacity: 0.7;
-  scale: 0.99;
+  background: #bcffb7;
   text-decoration: line-through;
 }

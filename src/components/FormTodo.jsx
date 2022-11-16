@@ -18,10 +18,13 @@ const FormTodo = ({ addTodo }) => {
         onChange={(e) => setInputValue(e.target.value)}
         value={inputValue}
         type="text"
-        placeholder="Type your task..."
+        placeholder="Add your task..."
+        maxLength="20"
       />
 
-      <button type="submit">add task</button>
+      <button tabIndex="1" type="submit">
+        +
+      </button>
     </form>
   );
 };

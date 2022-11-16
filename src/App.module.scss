@@ -2,32 +2,44 @@
   width: 80%;
   height: 80%;
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
+  overflow: auto;
 
   @media (max-width: 600px) {
     height: 100vh;
-    margin-top: 5rem;
+    width: 100%;
+    margin-top: 2rem;
   }
 
   .content {
     height: 100%;
+    width: 70%;
     display: flex;
     flex-direction: column;
     align-items: center;
+    @media (max-width: 600px) {
+      width: 100%;
+    }
 
-    .title {
-      width: 86%;
-      display: flex;
-      justify-content: space-between;
-      font-size: 3rem;
-      color: var(--primaryColor);
-      margin-bottom: 2rem;
+    .weather {
+      visibility: visible;
+      @media (max-width: 600px) {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 2rem;
+      }
       button {
+        padding: 0.2rem;
         font-size: 1rem;
-        background: var(--primaryColor);
-        img {
+        background: none;
+        border: none;
+
+        svg {
           width: 3rem;
           height: 3rem;
+          path {
+            fill: (var(--textBlackColor));
+          }
         }
         @media (min-width: 600px) {
           display: none;
@@ -35,9 +47,48 @@
       }
     }
 
-    .todolist {
-      list-style-type: none;
-      width: 90%;
+    .weatherHidden {
+      visibility: hidden;
+    }
+
+    .taskSection {
+      width: 60%;
+      background: var(--glassMorph);
+      padding: 0.8rem;
+      border-radius: 6px;
+      @media (max-width: 600px) {
+        width: 90%;
+      }
+      .title {
+        font-size: 2rem;
+        color: var(--textGreyColor);
+        margin-bottom: 1rem;
+      }
+      .ulWrapper {
+        .titleRow {
+          background: var(--blueColor);
+          border-top-left-radius: 6px;
+          border-top-right-radius: 6px;
+          padding: 0.6rem 0;
+          justify-content: space-between;
+          .titleText {
+            margin-left: 1.5rem;
+            width: 65%;
+            display: flex;
+            justify-content: space-between;
+            color: var(--primaryColor);
+          }
+        }
+        .todolist {
+          list-style-type: none;
+          border-radius: 6px;
+
+          li:last-child {
+            border-bottom-left-radius: 6px;
+            border-bottom-right-radius: 6px;
+          }
+        }
+      }
     }
   }
 }
