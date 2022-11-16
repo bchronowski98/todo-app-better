@@ -11,19 +11,26 @@
     border-radius: 6px;
     border: 2px solid var(--textBlackColor);
   }
-  .contentContainer{
+  .contentContainer {
     background: var(--glassMorph);
     border-radius: 6px;
-    .extraFeatures{
+    .extraFeatures {
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       padding-bottom: 1rem;
-      form{
-        select{
+      form {
+        select {
+          cursor: pointer;
           padding: 0.2rem 2rem;
           margin-bottom: 1rem;
+        }
+        input {
+          cursor: pointer;
+        }
+        label {
+          cursor: pointer;
         }
       }
     }
@@ -31,7 +38,6 @@
       display: flex;
       font-size: 2rem;
       align-items: center;
-
 
       justify-content: center;
       color: var(--textGreyColor);
@@ -73,8 +79,6 @@
       }
     }
   }
-
-
 }
 
 @media (max-width: 600px) {

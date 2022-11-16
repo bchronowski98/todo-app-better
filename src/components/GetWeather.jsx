@@ -9,7 +9,7 @@ const url = "https://live-weather.deno.dev";
 const getCities = "/get-cities";
 const rainTreshold = 0.7;
 
-const GetWeather = ({ toggle, setToggle, toggleWeather }) => {
+const GetWeather = ({ toggle, setToggle }) => {
   const [city, setCity] = useState("Cracow");
   const [checkbox, setCheckbox] = useState(false);
   const ref = useRef();
@@ -26,8 +26,8 @@ const GetWeather = ({ toggle, setToggle, toggleWeather }) => {
     loading: loadingCity,
     error: errorCity,
   } = useFetch(url + getCities);
-  const [loading, setLoading] = useState(loadingWeather);
-  const [error, setError] = useState(errorWeather);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [generalWeather, setGeneralWeather] = useState(null);
 
   // console.log(cities);
@@ -37,7 +37,13 @@ const GetWeather = ({ toggle, setToggle, toggleWeather }) => {
       interval.current = setInterval(() => {
         const loadData = async () => {
           try {
-            const res = await fetch(url + cityUrl);
+            //
+            const res = await fetch(url + cityUrl, {
+              method: "GET",
+              headers: {
+                "Cache-Control": "no-cache",
+              },
+            });
             const data = await res.json();
             setGeneralWeather(data);
             setLoading(false);
@@ -48,7 +54,7 @@ const GetWeather = ({ toggle, setToggle, toggleWeather }) => {
           }
         };
         loadData();
-      }, 30000);
+      }, 1000);
     } else {
       clearInterval(interval.current);
       interval.current = null;
@@ -105,13 +111,8 @@ const GetWeather = ({ toggle, setToggle, toggleWeather }) => {
               <Rain />
             )}
           </div>
-          {/*{toggle && (*/}
-          {/*  <button type="button" onClick={toggleWeather}>*/}
-          {/*    <XSign />*/}
-          {/*  </button>*/}
-          {/*)}*/}
         </div>
-        {!loadingCity && !errorWeather && (
+        {!loadingCity && !errorWeather && !errorCity && (
           <div className={styles.extraFeatures}>
             <form onChange={handleSubmitCity}>
               <select name="cities">

@@ -77,11 +77,7 @@ function App() {
           </div>
         </div>
       </div>
-      <GetWeather
-        toggle={toggle}
-        setToggle={setToggle}
-        toggleWeather={toggleWeather}
-      />
+      <GetWeather toggle={toggle} setToggle={setToggle} />
     </div>
   );
 }
