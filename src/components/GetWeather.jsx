@@ -4,18 +4,21 @@ import { ReactComponent as Sunny } from "../assets/day-sunny.svg";
 import { ReactComponent as Rain } from "../assets/rain.svg";
 import useFetch from "../hooks/useFetch.js";
 import useToggleOnOutsideClick from "../hooks/useToggleOnOutsideClick.jsx";
+import IntervalData from "./IntervalData.jsx";
+import DisplayWeatherIcons from "./DisplayWeatherIcons.jsx";
 
 const url = "https://live-weather.deno.dev";
 const getCities = "/get-cities";
-const rainTreshold = 0.7;
 
 const GetWeather = ({ toggle, setToggle }) => {
   const [city, setCity] = useState("Cracow");
   const [checkbox, setCheckbox] = useState(false);
+  const [intervalPre, setIntervalPre] = useState(null);
   const ref = useRef();
   useToggleOnOutsideClick(ref, toggle, setToggle);
-  const interval = useRef(null);
+
   const cityUrl = `/city?${city}`;
+
   const {
     data: weatherData,
     loading: loadingWeather,
@@ -25,46 +28,7 @@ const GetWeather = ({ toggle, setToggle }) => {
     data: cityData,
     loading: loadingCity,
     error: errorCity,
-  } = useFetch(url + getCities);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [generalWeather, setGeneralWeather] = useState(null);
-
-  // console.log(cities);
-
-  useEffect(() => {
-    if (checkbox) {
-      interval.current = setInterval(() => {
-        const loadData = async () => {
-          try {
-            //
-            const res = await fetch(url + cityUrl, {
-              method: "GET",
-              headers: {
-                "Cache-Control": "no-cache",
-              },
-            });
-            const data = await res.json();
-            setGeneralWeather(data);
-            setLoading(false);
-            console.log(data);
-          } catch (e) {
-            setError(e);
-            setLoading(false);
-          }
-        };
-        loadData();
-      }, 1000);
-    } else {
-      clearInterval(interval.current);
-      interval.current = null;
-    }
-    return () => clearInterval(interval.current);
-  }, [checkbox, city]);
-
-  useEffect(() => {
-    setGeneralWeather(null);
-  }, [city]);
+  } = useFetch(url + getCities, false);
 
   const handleSubmitCity = (e) => {
     e.preventDefault();
@@ -75,6 +39,10 @@ const GetWeather = ({ toggle, setToggle }) => {
     console.log("checkbox", !checkbox);
   };
 
+  const getIntervalWeatherPre = (intervalPre) => {
+    setIntervalPre(intervalPre);
+  };
+
   if (loadingWeather) {
     return <p>loading...</p>;
   }
@@ -83,6 +51,10 @@ const GetWeather = ({ toggle, setToggle }) => {
     return <p>error</p>;
   }
 
+  const fixedWeatherData = Number.parseFloat(weatherData.temperature).toFixed(
+    1
+  );
+
   return (
     <div ref={ref} className={`${styles.main} ${toggle ? "" : styles.toggled}`}>
       <div className={styles.contentContainer}>
@@ -90,26 +62,25 @@ const GetWeather = ({ toggle, setToggle }) => {
           <div className={styles.info}>
             <h4>{city}</h4>
             <h4>
-              {Number.parseFloat(
-                generalWeather
-                  ? generalWeather.temperature
-                  : weatherData.temperature
-              ).toFixed(1)}
+              {checkbox ? (
+                <IntervalData
+                  url={url}
+                  cityUrl={cityUrl}
+                  fixedWeatherData={fixedWeatherData}
+                  getIntervalWeatherPre={getIntervalWeatherPre}
+                />
+              ) : (
+                fixedWeatherData
+              )}
               &deg;
             </h4>
           </div>
           <div className={styles.icons}>
-            {generalWeather ? (
-              generalWeather.precipitation < rainTreshold ? (
-                <Sunny />
-              ) : (
-                <Rain />
-              )
-            ) : weatherData.precipitation < rainTreshold ? (
-              <Sunny />
-            ) : (
-              <Rain />
-            )}
+            <DisplayWeatherIcons
+              weatherDataPre={weatherData.precipitation}
+              intervalPre={intervalPre}
+              checkbox={checkbox}
+            />
           </div>
         </div>
         {!loadingCity && !errorWeather && !errorCity && (
