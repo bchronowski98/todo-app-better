@@ -5,17 +5,39 @@ import { nanoid } from "nanoid";
 import ItemTodo from "./components/ItemTodo.jsx";
 import GetWeather from "./components/GetWeather.jsx";
 import { ReactComponent as ToggleButton } from "./assets/day-sunny.svg";
+import { useEffect } from "react";
+import {
+  init,
+  addTaskToDB,
+  database,
+  deleteTaskFromDB,
+  items,
+} from "./idb/idb.js";
 
 function App() {
   const [todos, setTodos] = useState([]);
   const [toggle, setToggle] = useState(false);
   const [editId, setEditId] = useState("");
+  useEffect(() => {
+    init()
+      .then(() => {
+        console.log("database init");
+        setTodos(items);
+      })
+      .catch(() => console.warn);
+  }, []);
 
   const addTodo = (todoObject) => {
+    const id = nanoid(3);
     setTodos((prevTodos) => [
-      { id: nanoid(3), content: todoObject },
+      { id: id, content: todoObject, done: false },
       ...prevTodos,
     ]);
+    addTaskToDB(database, id, todoObject)
+      .then(() => {
+        console.log("added to database", id);
+      })
+      .catch(console.warn);
   };
 
   const toggleWeather = () => {
@@ -24,12 +46,18 @@ function App() {
 
   const removeTodo = (id) => {
     setTodos((prevTodos) => prevTodos.filter((todo) => id !== todo.id));
+    deleteTaskFromDB(database, id)
+      .then(() => {
+        console.log("task deleted", id);
+      })
+      .catch(console.warn);
   };
 
   const editTodo = (id, newTodo) => {
     setTodos((prevTodos) =>
       prevTodos.map((todo) => {
         if (id === todo.id) {
+          addTaskToDB(database, id, newTodo);
           return { ...todo, content: newTodo };
         }
         return todo;
