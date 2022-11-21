@@ -16,13 +16,22 @@ export async function init() {
   items = await db.getAll("Testowe");
 }
 
-export async function addTaskToDB(database, id, content) {
-  return await database.put("Testowe", { id: id, content: content });
+export async function addTaskToDB(database, id, content, done = false) {
+  return await database.put("Testowe", {
+    id: id,
+    content: content,
+    done: done,
+  });
 }
 
 export async function deleteTaskFromDB(database, id) {
   return await database.delete("Testowe", id);
 }
-// export async function editTaskInDB(database, id) {
-//   return await database.delete("Testowe", id);
-// }
+
+export async function editTaskInDB(database, id, content, done = false) {
+  return await database.put("Testowe", {
+    id: id,
+    content: content,
+    done: done,
+  });
+}

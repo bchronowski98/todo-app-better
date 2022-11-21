@@ -1,9 +1,18 @@
 import React, { useState } from "react";
 import NormalTodoTemplate from "./NormalTodoTemplate.jsx";
 import EditTodoTemplate from "./EditTodoTemplate.jsx";
+import { editTaskInDB, database } from "../idb/idb.js";
 
-const ItemTodo = ({ content, removeTodo, id, editTodo, setEditId, editId }) => {
-  const [isDone, setIsDone] = useState(false);
+const ItemTodo = ({
+  content,
+  removeTodo,
+  id,
+  editTodo,
+  setEditId,
+  editId,
+  done,
+}) => {
+  const [isDone, setIsDone] = useState(done);
   const [newTodo, setNewTodo] = useState("");
 
   const onTodoClick = () => {
@@ -20,6 +29,9 @@ const ItemTodo = ({ content, removeTodo, id, editTodo, setEditId, editId }) => {
     setIsDone(false);
     setNewTodo(content);
     setEditId(id);
+    // editTaskInDB(database, id, newTodo, isDone).then(() => {
+    //   console.log(id, newTodo);
+    // });
   };
 
   const cancelStateOnClick = () => {

@@ -27,17 +27,23 @@ function App() {
       .catch(() => console.warn);
   }, []);
 
+  useEffect(() => {
+    todos.map((todo) => {
+      addTaskToDB(database, todo.id, todo.content, todo.done);
+    });
+  }, [todos]);
+
   const addTodo = (todoObject) => {
     const id = nanoid(3);
     setTodos((prevTodos) => [
       { id: id, content: todoObject, done: false },
       ...prevTodos,
     ]);
-    addTaskToDB(database, id, todoObject)
-      .then(() => {
-        console.log("added to database", id);
-      })
-      .catch(console.warn);
+    // addTaskToDB(database, id, todoObject)
+    //   .then(() => {
+    //     console.log("added to database", id);
+    //   })
+    //   .catch(console.warn);
   };
 
   const toggleWeather = () => {
@@ -57,8 +63,12 @@ function App() {
     setTodos((prevTodos) =>
       prevTodos.map((todo) => {
         if (id === todo.id) {
-          addTaskToDB(database, id, newTodo);
-          return { ...todo, content: newTodo };
+          // addTaskToDB(database, id, newTodo)
+          //   .then(() => {
+          //     console.log("task edited", id);
+          //   })
+          //   .catch(console.warn);
+          return { ...todo, content: newTodo, done: todo.done };
         }
         return todo;
       })
@@ -94,6 +104,7 @@ function App() {
                     key={todo.id}
                     id={todo.id}
                     content={todo.content}
+                    done={todo.done}
                     removeTodo={removeTodo}
                     editTodo={editTodo}
                     setEditId={setEditId}
