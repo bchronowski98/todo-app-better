@@ -9,20 +9,29 @@ export async function init() {
       const store = db.createObjectStore("Testowe", {
         keyPath: "id",
       });
+      store.createIndex("date", "timeStamp");
     },
   });
 
   database = db;
-  items = await db.getAll("Testowe");
+  items = await db.getAllFromIndex("Testowe", "date");
+  // items = await db.getAll("Testowe");
 }
 
 export async function deleteTaskIdb(database, id) {
   return await database.delete("Testowe", id);
 }
 
-export async function updateTaskIdb(database, id, content, done = false) {
+export async function updateTaskIdb(
+  database,
+  id,
+  timeStamp,
+  content,
+  done = false
+) {
   return await database.put("Testowe", {
     id: id,
+    timeStamp: timeStamp,
     content: content,
     done: done,
   });

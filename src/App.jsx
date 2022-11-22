@@ -21,20 +21,25 @@ function App() {
     init()
       .then(() => {
         console.log("database init");
-        setTodos(items);
+        setTodos(items.reverse());
       })
       .catch(() => console.warn);
   }, []);
 
   useEffect(() => {
     todos.map((todo) => {
-      updateTaskIdb(database, todo.id, todo.content, todo.done);
+      updateTaskIdb(database, todo.id, todo.timeStamp, todo.content, todo.done);
     });
   }, [todos]);
 
   const addTodo = (todoObject) => {
     setTodos((prevTodos) => [
-      { id: nanoid(3), content: todoObject, done: false },
+      {
+        id: nanoid(3),
+        timeStamp: new Date().getTime(),
+        content: todoObject,
+        done: false,
+      },
       ...prevTodos,
     ]);
   };
