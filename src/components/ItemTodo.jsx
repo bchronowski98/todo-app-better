@@ -2,28 +2,38 @@ import React, { useState } from "react";
 import NormalTodoTemplate from "./NormalTodoTemplate.jsx";
 import EditTodoTemplate from "./EditTodoTemplate.jsx";
 
-const ItemTodo = ({ content, removeTodo, id, editTodo, setEditId, editId }) => {
-  const [isDone, setIsDone] = useState(false);
+const ItemTodo = ({
+  content,
+  removeTodo,
+  id,
+  editTodo,
+  setEditId,
+  editId,
+  done,
+  changeDone,
+}) => {
   const [newTodo, setNewTodo] = useState("");
 
   const onTodoClick = () => {
-    setIsDone((prevState) => !prevState);
+    changeDone(id, !done);
+    console.log(done);
   };
 
   const onTodoKeyDown = (e) => {
     if (e.key === "Enter") {
-      setIsDone((prevState) => !prevState);
+      changeDone(id, !done);
     }
   };
 
-  const editStateOnClick = () => {
-    setIsDone(false);
+  const editStateOnClick = (e) => {
+    e.stopPropagation();
+    changeDone(id, false);
     setNewTodo(content);
     setEditId(id);
   };
 
   const cancelStateOnClick = () => {
-    setIsDone(false);
+    changeDone(id, false);
     setNewTodo(content);
     setEditId("");
   };
@@ -37,7 +47,7 @@ const ItemTodo = ({ content, removeTodo, id, editTodo, setEditId, editId }) => {
     if (typeof newTodo === "string" && newTodo) {
       editTodo(id, newTodo);
       setNewTodo("");
-      setIsDone(false);
+      changeDone(id, false);
       setEditId("");
     }
   };
@@ -55,7 +65,7 @@ const ItemTodo = ({ content, removeTodo, id, editTodo, setEditId, editId }) => {
       ) : (
         <NormalTodoTemplate
           onTodoClick={onTodoClick}
-          isDone={isDone}
+          isDone={done}
           content={content}
           editStateOnClick={editStateOnClick}
           removeTodo={removeTodo}

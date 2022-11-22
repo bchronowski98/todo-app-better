@@ -1,19 +1,40 @@
 import styles from "./App.module.scss";
 import FormTodo from "./components/FormTodo.jsx";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { nanoid } from "nanoid";
 import ItemTodo from "./components/ItemTodo.jsx";
 import WeatherWidget from "./components/WeatherWidget.jsx";
 import { ReactComponent as ToggleButton } from "./assets/day-sunny.svg";
+import {
+  init,
+  updateTaskIdb,
+  deleteTaskIdb,
+  database,
+  items,
+} from "./idb/idb.js";
 
 function App() {
   const [todos, setTodos] = useState([]);
   const [toggle, setToggle] = useState(false);
   const [editId, setEditId] = useState("");
+  useEffect(() => {
+    init()
+      .then(() => {
+        console.log("database init");
+        setTodos(items);
+      })
+      .catch(() => console.warn);
+  }, []);
+
+  useEffect(() => {
+    todos.map((todo) => {
+      updateTaskIdb(database, todo.id, todo.content, todo.done);
+    });
+  }, [todos]);
 
   const addTodo = (todoObject) => {
     setTodos((prevTodos) => [
-      { id: nanoid(3), content: todoObject },
+      { id: nanoid(3), content: todoObject, done: false },
       ...prevTodos,
     ]);
   };
@@ -24,6 +45,11 @@ function App() {
 
   const removeTodo = (id) => {
     setTodos((prevTodos) => prevTodos.filter((todo) => id !== todo.id));
+    deleteTaskIdb(database, id)
+      .then(() => {
+        console.log("task deleted", id);
+      })
+      .catch(console.warn);
   };
 
   const editTodo = (id, newTodo) => {
@@ -31,6 +57,17 @@ function App() {
       prevTodos.map((todo) => {
         if (id === todo.id) {
           return { ...todo, content: newTodo };
+        }
+        return todo;
+      })
+    );
+  };
+
+  const changeDone = (id, done) => {
+    setTodos((prevTodos) =>
+      prevTodos.map((todo) => {
+        if (id === todo.id) {
+          return { ...todo, done: done };
         }
         return todo;
       })
@@ -66,8 +103,10 @@ function App() {
                     key={todo.id}
                     id={todo.id}
                     content={todo.content}
+                    done={todo.done}
                     removeTodo={removeTodo}
                     editTodo={editTodo}
+                    changeDone={changeDone}
                     setEditId={setEditId}
                     editId={editId}
                   />
