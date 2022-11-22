@@ -1,21 +1,23 @@
 import React, { useState, useEffect, useRef } from "react";
 import styles from "./WeatherWidget.module.scss";
-import { ReactComponent as Sunny } from "../assets/day-sunny.svg";
-import { ReactComponent as Rain } from "../assets/rain.svg";
+// import { ReactComponent as Sunny } from "../assets/day-sunny.svg";
+// import { ReactComponent as Rain } from "../assets/rain.svg";
 import useFetch from "../hooks/useFetch.js";
 import useToggleOnOutsideClick from "../hooks/useToggleOnOutsideClick.jsx";
-import RevalidateWeather from "./RevalidateWeather.jsx";
+// import RevalidateWeather from "./RevalidateWeather.jsx";
 import DisplayWeatherIcons from "./DisplayWeatherIcons.jsx";
 import { fixTemperatureDisplay } from "../utils/formatData.js";
 
 const url = "https://live-weather.deno.dev";
 const citiesListUrl = "/get-cities";
 
+const REVALIDATE_INTERVAL = 4_000;
+
 const WeatherWidget = ({ toggle, setToggle }) => {
   const [city, setCity] = useState("Cracow");
-  const [checkbox, setCheckbox] = useState(false);
-  const [revalidatedPrecipitation, setRevalidatedPrecipitation] =
-    useState(null);
+  const [isChecked, setIsChecked] = useState(false);
+  // const [revalidatedPrecipitation, setRevalidatedPrecipitation] =
+  //   useState(null);
   const ref = useRef();
   useToggleOnOutsideClick(ref, toggle, setToggle);
 
@@ -25,6 +27,7 @@ const WeatherWidget = ({ toggle, setToggle }) => {
     data: initialWeatherData,
     loading: initialWeatherLoading,
     error: initialWeatherError,
+    invalidate,
   } = useFetch(url + cityUrl);
   const {
     data: cityData,
@@ -32,14 +35,42 @@ const WeatherWidget = ({ toggle, setToggle }) => {
     error: errorCity,
   } = useFetch(url + citiesListUrl, false);
 
+  const intervalId = useRef(null);
+  const clearFetchInterval = () => {
+    clearInterval(intervalId.current);
+    intervalId.current = null;
+  };
+
+  useEffect(() => {
+    if (isChecked) {
+      intervalId.current = setInterval(() => {
+        invalidate();
+      }, REVALIDATE_INTERVAL);
+    } else if (intervalId.current) {
+      clearFetchInterval();
+    }
+  }, [isChecked, invalidate]);
+
+  useEffect(() => {
+    // onmount
+    return () => {
+      // onunmpoiunt
+      if (intervalId.current) {
+        clearFetchInterval();
+      }
+    };
+  }, []);
+
   const handleSubmitCity = (e) => {
     e.preventDefault();
     setCity(e.target.value);
   };
 
   const handleSubmitCheckbox = () => {
-    console.log("checkbox", !checkbox);
+    console.log("checkbox", !isChecked);
   };
+
+  // render
 
   if (initialWeatherLoading) {
     return <p>loading...</p>;
@@ -60,26 +91,28 @@ const WeatherWidget = ({ toggle, setToggle }) => {
           <div className={styles.info}>
             <h4>{city}</h4>
             <h4>
-              {checkbox ? (
-                <RevalidateWeather
-                  url={url}
-                  cityUrl={cityUrl}
-                  fixedInitialWeatherData={fixedInitialWeatherData}
-                  setRevalidatedPrecipitation={setRevalidatedPrecipitation}
-                  checkbox={checkbox}
-                />
-              ) : (
-                fixedInitialWeatherData
-              )}
+              {/*{isChecked ? (*/}
+              {/*  <RevalidateWeather*/}
+              {/*    url={url}*/}
+              {/*    cityUrl={cityUrl}*/}
+              {/*    fixedInitialWeatherData={fixedInitialWeatherData}*/}
+              {/*    setRevalidatedPrecipitation={setRevalidatedPrecipitation}*/}
+              {/*    checkbox={isChecked}*/}
+              {/*  />*/}
+              {/*) : (*/}
+              {fixedInitialWeatherData}
+              {/*)}*/}
               &deg;
             </h4>
           </div>
           <div className={styles.icons}>
-            <DisplayWeatherIcons
-              InitialWeatherPrecipitation={initialWeatherData.precipitation}
-              revalidatedPrecipitation={revalidatedPrecipitation}
-              checkbox={checkbox}
-            />
+            {typeof initialWeatherData?.precipitation === "number" && (
+              <DisplayWeatherIcons
+                InitialWeatherPrecipitation={initialWeatherData.precipitation}
+                // revalidatedPrecipitationcipitation={revalidatedPrecipitation}
+                // checkbox={isChecked}
+              />
+            )}
           </div>
         </div>
         {!loadingCity && !initialWeatherError && !errorCity && (
@@ -100,7 +133,7 @@ const WeatherWidget = ({ toggle, setToggle }) => {
               <input
                 type="checkbox"
                 id="check"
-                onChange={() => setCheckbox((prevState) => !prevState)}
+                onChange={() => setIsChecked((prevState) => !prevState)}
               />
               <label htmlFor="check">Refresh weather every 30s</label>
             </form>

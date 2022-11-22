@@ -4,25 +4,14 @@ import { ReactComponent as Rain } from "../assets/rain.svg";
 
 const DisplayWeatherIcons = ({
   InitialWeatherPrecipitation,
-  revalidatedPrecipitation,
-  checkbox,
+  // revalidatedPrecipitation,
+  // checkbox,
 }) => {
   const rainTreshold = 0.7;
-  return (
-    <>
-      {checkbox ? (
-        revalidatedPrecipitation < rainTreshold ? (
-          <Sunny />
-        ) : (
-          <Rain />
-        )
-      ) : InitialWeatherPrecipitation < rainTreshold ? (
-        <Sunny />
-      ) : (
-        <Rain />
-      )}
-    </>
-  );
+  if (InitialWeatherPrecipitation < rainTreshold) {
+    return <Sunny />;
+  }
+  return <Rain />;
 };
 
 export default DisplayWeatherIcons;
