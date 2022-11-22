@@ -1,37 +1,41 @@
 import { useState, useEffect, useCallback } from "react";
 
-const useFetch = (url, revalidate = false, interval = 6, headers = null) => {
+const useFetch = (url) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [revalidateKey, setRevalidateKey] = useState("");
 
-  const loadData = useCallback(async () => {
-    try {
-      const res = await fetch(url, headers);
-      const data = await res.json();
-      setData(data);
-      setLoading(false);
-    } catch (e) {
-      setError(e);
-      setLoading(false);
-    }
-  }, [url]);
-
-  useEffect(() => {
-    const revalidateInterval = setInterval(() => {
-      if (revalidate) {
-        setRevalidateKey(Math.random().toString());
+  const loadData = useCallback(
+    async (shouldInvalidate) => {
+      try {
+        const res = await fetch(url, {
+          method: "GET",
+          headers: shouldInvalidate
+            ? {
+                "Cache-Control": "no-cache",
+              }
+            : {},
+        });
+        const data = await res.json();
+        setData(data);
+        setLoading(false);
+      } catch (e) {
+        setError(e);
+        setLoading(false);
       }
-    }, interval * 1000);
-    return () => clearInterval(revalidateInterval);
-  }, [interval, revalidate]);
+    },
+    [url]
+  );
+
+  const invalidate = useCallback(() => {
+    loadData(true);
+  }, [loadData]);
 
   useEffect(() => {
     loadData();
-  }, [url, revalidateKey]);
+  }, [url]);
 
-  return { data, loading, error, revalidate: loadData };
+  return { data, loading, error, invalidate };
 };
 
 export default useFetch;

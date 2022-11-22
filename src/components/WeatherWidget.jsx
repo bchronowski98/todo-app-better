@@ -41,10 +41,6 @@ const WeatherWidget = ({ toggle, setToggle }) => {
     console.log("checkbox", !checkbox);
   };
 
-  const getRevalidatedPrecipitation = (revalidatedPrecipitation) => {
-    setRevalidatedPrecipitation(revalidatedPrecipitation);
-  };
-
   if (initialWeatherLoading) {
     return <p>loading...</p>;
   }
@@ -69,7 +65,8 @@ const WeatherWidget = ({ toggle, setToggle }) => {
                   url={url}
                   cityUrl={cityUrl}
                   fixedInitialWeatherData={fixedInitialWeatherData}
-                  getRevalidatedPrecipitation={getRevalidatedPrecipitation}
+                  setRevalidatedPrecipitation={setRevalidatedPrecipitation}
+                  checkbox={checkbox}
                 />
               ) : (
                 fixedInitialWeatherData

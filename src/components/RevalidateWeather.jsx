@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import useFetch from "../hooks/useFetch.js";
 import { fixTemperatureDisplay } from "../utils/formatData.js";
 
@@ -6,19 +6,25 @@ const RevalidateWeather = ({
   url,
   cityUrl,
   fixedInitialWeatherData,
-  getRevalidatedPrecipitation,
+  setRevalidatedPrecipitation,
+  checkbox,
 }) => {
-  const headers = {
-    method: "GET",
-    headers: {
-      "Cache-Control": "no-cache",
-    },
-  };
   const {
     data: revalidatedWeather,
     loading: revalidatedLoading,
     error: revalidatedError,
-  } = useFetch(url + cityUrl, true, 4, headers);
+    invalidate: revalidateData,
+  } = useFetch(url + cityUrl);
+
+  useEffect(() => {
+    if (checkbox) {
+      const revalidateInterval = setInterval(() => {
+        revalidateData();
+      }, 4000);
+
+      return () => clearInterval(revalidateInterval);
+    }
+  }, [url]);
 
   if (revalidatedLoading) {
     return <p>loading...</p>;
@@ -32,7 +38,8 @@ const RevalidateWeather = ({
     revalidatedWeather.temperature
   );
 
-  getRevalidatedPrecipitation(revalidatedWeather.precipitation);
+  //blad za pierwszym renderem ale nie wiem jak go usunac!?!
+  setRevalidatedPrecipitation(revalidatedWeather.precipitation);
 
   return (
     <>
