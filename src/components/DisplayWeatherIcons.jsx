@@ -2,13 +2,9 @@ import React from "react";
 import { ReactComponent as Sunny } from "../assets/day-sunny.svg";
 import { ReactComponent as Rain } from "../assets/rain.svg";
 
-const DisplayWeatherIcons = ({
-  InitialWeatherPrecipitation,
-  // revalidatedPrecipitation,
-  // checkbox,
-}) => {
+const DisplayWeatherIcons = ({ weatherPrecipitation }) => {
   const rainTreshold = 0.7;
-  if (InitialWeatherPrecipitation < rainTreshold) {
+  if (weatherPrecipitation < rainTreshold) {
     return <Sunny />;
   }
   return <Rain />;

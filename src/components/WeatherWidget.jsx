@@ -1,10 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import styles from "./WeatherWidget.module.scss";
-// import { ReactComponent as Sunny } from "../assets/day-sunny.svg";
-// import { ReactComponent as Rain } from "../assets/rain.svg";
 import useFetch from "../hooks/useFetch.js";
 import useToggleOnOutsideClick from "../hooks/useToggleOnOutsideClick.jsx";
-// import RevalidateWeather from "./RevalidateWeather.jsx";
 import DisplayWeatherIcons from "./DisplayWeatherIcons.jsx";
 import { fixTemperatureDisplay } from "../utils/formatData.js";
 
@@ -16,24 +13,22 @@ const REVALIDATE_INTERVAL = 4_000;
 const WeatherWidget = ({ toggle, setToggle }) => {
   const [city, setCity] = useState("Cracow");
   const [isChecked, setIsChecked] = useState(false);
-  // const [revalidatedPrecipitation, setRevalidatedPrecipitation] =
-  //   useState(null);
   const ref = useRef();
   useToggleOnOutsideClick(ref, toggle, setToggle);
 
   const cityUrl = `/city?${city}`;
 
   const {
-    data: initialWeatherData,
-    loading: initialWeatherLoading,
-    error: initialWeatherError,
+    data: weatherData,
+    loading: weatherLoading,
+    error: weatherError,
     invalidate,
   } = useFetch(url + cityUrl);
   const {
     data: cityData,
     loading: loadingCity,
     error: errorCity,
-  } = useFetch(url + citiesListUrl, false);
+  } = useFetch(url + citiesListUrl);
 
   const intervalId = useRef(null);
   const clearFetchInterval = () => {
@@ -54,7 +49,7 @@ const WeatherWidget = ({ toggle, setToggle }) => {
   useEffect(() => {
     // onmount
     return () => {
-      // onunmpoiunt
+      // onunmount
       if (intervalId.current) {
         clearFetchInterval();
       }
@@ -72,16 +67,16 @@ const WeatherWidget = ({ toggle, setToggle }) => {
 
   // render
 
-  if (initialWeatherLoading) {
+  if (weatherLoading) {
     return <p>loading...</p>;
   }
 
-  if (initialWeatherError) {
+  if (weatherError) {
     return <p>error</p>;
   }
 
   const fixedInitialWeatherData = fixTemperatureDisplay(
-    initialWeatherData.temperature
+    weatherData.temperature
   );
 
   return (
@@ -91,31 +86,19 @@ const WeatherWidget = ({ toggle, setToggle }) => {
           <div className={styles.info}>
             <h4>{city}</h4>
             <h4>
-              {/*{isChecked ? (*/}
-              {/*  <RevalidateWeather*/}
-              {/*    url={url}*/}
-              {/*    cityUrl={cityUrl}*/}
-              {/*    fixedInitialWeatherData={fixedInitialWeatherData}*/}
-              {/*    setRevalidatedPrecipitation={setRevalidatedPrecipitation}*/}
-              {/*    checkbox={isChecked}*/}
-              {/*  />*/}
-              {/*) : (*/}
               {fixedInitialWeatherData}
-              {/*)}*/}
               &deg;
             </h4>
           </div>
           <div className={styles.icons}>
-            {typeof initialWeatherData?.precipitation === "number" && (
+            {typeof weatherData?.precipitation === "number" && (
               <DisplayWeatherIcons
-                InitialWeatherPrecipitation={initialWeatherData.precipitation}
-                // revalidatedPrecipitationcipitation={revalidatedPrecipitation}
-                // checkbox={isChecked}
+                weatherPrecipitation={weatherData.precipitation}
               />
             )}
           </div>
         </div>
-        {!loadingCity && !initialWeatherError && !errorCity && (
+        {!loadingCity && !weatherError && !errorCity && (
           <div className={styles.extraFeatures}>
             <form onChange={handleSubmitCity}>
               <select name="cities">
