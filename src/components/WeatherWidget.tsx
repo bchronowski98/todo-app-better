@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import styles from "./WeatherWidget.module.scss";
-import useFetch from "../hooks/useFetch.js";
-import useToggleOnOutsideClick from "../hooks/useToggleOnOutsideClick.jsx";
-import DisplayWeatherIcons from "./DisplayWeatherIcons.jsx";
+import useFetch from "../hooks/useFetch";
+import useToggleOnOutsideClick from "../hooks/useToggleOnOutsideClick";
+import DisplayWeatherIcons from "./DisplayWeatherIcons.tsx";
 import { fixTemperatureDisplay } from "../utils/formatData.js";
 
 const url = "https://live-weather.deno.dev";

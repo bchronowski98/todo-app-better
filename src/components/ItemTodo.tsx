@@ -1,31 +1,42 @@
-import React, { useState } from "react";
-import NormalTodoTemplate from "./NormalTodoTemplate.jsx";
-import EditTodoTemplate from "./EditTodoTemplate.jsx";
+import React, { SyntheticEvent, useState } from "react";
+import NormalTodoTemplate from "./NormalTodoTemplate";
+import EditTodoTemplate from "./EditTodoTemplate.tsx";
 
-const ItemTodo = ({
+interface ItemTodoInterface {
+  content: string;
+  removeTodo: any;
+  id: string;
+  editTodo: any;
+  setEditId: any;
+  editId: any;
+  isDone: boolean;
+  changeDone: any;
+}
+
+const ItemTodo: React.FC<ItemTodoInterface> = ({
   content,
   removeTodo,
   id,
   editTodo,
   setEditId,
   editId,
-  done,
+  isDone,
   changeDone,
 }) => {
   const [newTodo, setNewTodo] = useState("");
 
   const onTodoClick = () => {
-    changeDone(id, !done);
-    console.log(done);
+    changeDone(id, !isDone);
+    console.log(isDone);
   };
 
-  const onTodoKeyDown = (e) => {
+  const onTodoKeyDown = (e: KeyboardEvent) => {
     if (e.key === "Enter") {
-      changeDone(id, !done);
+      changeDone(id, !isDone);
     }
   };
 
-  const editStateOnClick = (e) => {
+  const editStateOnClick = (e: MouseEvent) => {
     e.stopPropagation();
     changeDone(id, false);
     setNewTodo(content);
@@ -38,13 +49,13 @@ const ItemTodo = ({
     setEditId("");
   };
 
-  const handleEdit = (e) => {
+  const handleEdit = (e: any) => {
     setNewTodo(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
-    if (typeof newTodo === "string" && newTodo) {
+    if (newTodo) {
       editTodo(id, newTodo);
       setNewTodo("");
       changeDone(id, false);
@@ -65,7 +76,7 @@ const ItemTodo = ({
       ) : (
         <NormalTodoTemplate
           onTodoClick={onTodoClick}
-          isDone={done}
+          isDone={isDone}
           content={content}
           editStateOnClick={editStateOnClick}
           removeTodo={removeTodo}

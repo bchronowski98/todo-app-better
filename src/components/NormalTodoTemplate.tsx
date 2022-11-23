@@ -1,9 +1,19 @@
-import React from "react";
+import React, { ChangeEvent } from "react";
 import styles from "./ItemTodo.module.scss";
 import { ReactComponent as Edit } from "../assets/edit.svg";
 import { ReactComponent as Del } from "../assets/delete.svg";
 
-const NormalTodoTemplate = ({
+interface INormalTodoTemlate {
+  isDone: boolean;
+  content: string;
+  onTodoClick: () => void;
+  editStateOnClick: any;
+  removeTodo: any;
+  id: string;
+  onTodoKeyDown: any;
+}
+
+const NormalTodoTemplate: React.FC<INormalTodoTemlate> = ({
   isDone,
   content,
   onTodoClick,
@@ -17,7 +27,7 @@ const NormalTodoTemplate = ({
       className={`${styles.todo} ${isDone ? styles.todoD : ""}`}
       onClick={onTodoClick}
       onKeyDown={onTodoKeyDown}
-      tabIndex="0"
+      tabIndex={0}
     >
       <div className={styles.todoInside}>
         {content}

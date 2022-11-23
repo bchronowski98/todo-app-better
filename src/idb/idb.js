@@ -27,12 +27,12 @@ export async function updateTaskIdb(
   id,
   timeStamp,
   content,
-  done = false
+  isDone = false
 ) {
   return await database.put("Testowe", {
     id: id,
     timeStamp: timeStamp,
     content: content,
-    done: done,
+    isDone: isDone,
   });
 }

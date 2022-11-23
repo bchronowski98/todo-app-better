@@ -1,9 +1,9 @@
 import styles from "./App.module.scss";
-import FormTodo from "./components/FormTodo.jsx";
+import FormTodo from "./components/FormTodo";
 import React, { useState, useEffect } from "react";
 import { nanoid } from "nanoid";
-import ItemTodo from "./components/ItemTodo.jsx";
-import WeatherWidget from "./components/WeatherWidget.jsx";
+import ItemTodo from "./components/ItemTodo";
+import WeatherWidget from "./components/WeatherWidget";
 import { ReactComponent as ToggleButton } from "./assets/day-sunny.svg";
 import {
   init,
@@ -12,6 +12,8 @@ import {
   database,
   items,
 } from "./idb/idb.js";
+
+// interface;
 
 function App() {
   const [todos, setTodos] = useState([]);
@@ -28,7 +30,13 @@ function App() {
 
   useEffect(() => {
     todos.map((todo) => {
-      updateTaskIdb(database, todo.id, todo.timeStamp, todo.content, todo.done);
+      updateTaskIdb(
+        database,
+        todo.id,
+        todo.timeStamp,
+        todo.content,
+        todo.isDone
+      );
     });
   }, [todos]);
 
@@ -38,7 +46,7 @@ function App() {
         id: nanoid(3),
         timeStamp: new Date().getTime(),
         content: todoObject,
-        done: false,
+        isDone: false,
       },
       ...prevTodos,
     ]);
@@ -48,7 +56,7 @@ function App() {
     setToggle((prevState) => !prevState);
   };
 
-  const removeTodo = (id) => {
+  const removeTodo = (id: string) => {
     setTodos((prevTodos) => prevTodos.filter((todo) => id !== todo.id));
     deleteTaskIdb(database, id)
       .then(() => {
@@ -57,7 +65,7 @@ function App() {
       .catch(console.warn);
   };
 
-  const editTodo = (id, newTodo) => {
+  const editTodo = (id: string, newTodo: string) => {
     setTodos((prevTodos) =>
       prevTodos.map((todo) => {
         if (id === todo.id) {
@@ -68,11 +76,11 @@ function App() {
     );
   };
 
-  const changeDone = (id, done) => {
+  const changeDone = (id, isDone) => {
     setTodos((prevTodos) =>
       prevTodos.map((todo) => {
         if (id === todo.id) {
-          return { ...todo, done: done };
+          return { ...todo, isDone: isDone };
         }
         return todo;
       })
@@ -108,7 +116,7 @@ function App() {
                     key={todo.id}
                     id={todo.id}
                     content={todo.content}
-                    done={todo.done}
+                    isDone={todo.isDone}
                     removeTodo={removeTodo}
                     editTodo={editTodo}
                     changeDone={changeDone}

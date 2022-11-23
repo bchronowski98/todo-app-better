@@ -1,12 +1,12 @@
-import { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
-const useFetch = (url) => {
+const useFetch = (url: string) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<any>(null);
 
   const loadData = useCallback(
-    async (shouldInvalidate) => {
+    async (shouldInvalidate?: boolean) => {
       try {
         const res = await fetch(url, {
           method: "GET",

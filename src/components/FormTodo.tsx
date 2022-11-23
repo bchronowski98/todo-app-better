@@ -6,7 +6,7 @@ const FormTodo = ({ addTodo }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (typeof inputValue === "string" && inputValue) {
+    if (inputValue) {
       addTodo(inputValue);
       setInputValue("");
     }
@@ -19,10 +19,10 @@ const FormTodo = ({ addTodo }) => {
         value={inputValue}
         type="text"
         placeholder="Add your task..."
-        maxLength="20"
+        maxLength={20}
       />
 
-      <button tabIndex="1" type="submit">
+      <button tabIndex={1} type="submit">
         +
       </button>
     </form>
