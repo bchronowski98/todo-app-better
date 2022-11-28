@@ -5,13 +5,7 @@ import { nanoid } from "nanoid";
 import ItemTodo from "./components/ItemTodo";
 import WeatherWidget from "./components/WeatherWidget";
 import { ReactComponent as ToggleButton } from "./assets/day-sunny.svg";
-import {
-  init,
-  updateTaskIdb,
-  deleteTaskIdb,
-  database,
-  items,
-} from "./idb/idb.js";
+import { init, updateTaskIdb, deleteTaskIdb, database } from "./idb/idb.js";
 
 // interface;
 
@@ -19,13 +13,27 @@ function App() {
   const [todos, setTodos] = useState([]);
   const [toggle, setToggle] = useState(false);
   const [editId, setEditId] = useState("");
+  const [testCheck, setTestCheck] = useState(false);
+
   useEffect(() => {
-    init()
-      .then(() => {
-        console.log("database init");
-        setTodos(items.reverse());
-      })
-      .catch(() => console.warn);
+    const initDB = async () => {
+      await init()
+        .then((x: any) => {
+          console.log("database init");
+          let todos = x.storedTodos;
+          setTodos(todos.reverse());
+          setTestCheck(x.checkboxValue.isChecked);
+        })
+        .catch(() => console.warn);
+    };
+
+    initDB().then(() => {
+      console.log(":)");
+      console.log(testCheck);
+    });
+
+    // console.log(items);
+    // setTodos(items);
   }, []);
 
   useEffect(() => {
@@ -129,7 +137,12 @@ function App() {
           </div>
         </div>
       </div>
-      <WeatherWidget toggle={toggle} setToggle={setToggle} />
+      <WeatherWidget
+        toggle={toggle}
+        setToggle={setToggle}
+        isChecked={testCheck}
+        setIsChecked={setTestCheck}
+      />
     </div>
   );
 }

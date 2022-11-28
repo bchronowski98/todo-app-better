@@ -4,15 +4,15 @@ import useFetch from "../hooks/useFetch";
 import useToggleOnOutsideClick from "../hooks/useToggleOnOutsideClick";
 import DisplayWeatherIcons from "./DisplayWeatherIcons.tsx";
 import { fixTemperatureDisplay } from "../utils/formatData.js";
+import { database, updateCheckbox, updateCity } from "../idb/idb";
 
 const url = "https://live-weather.deno.dev";
 const citiesListUrl = "/get-cities";
 
 const REVALIDATE_INTERVAL = 4_000;
 
-const WeatherWidget = ({ toggle, setToggle }) => {
+const WeatherWidget = ({ toggle, setToggle, isChecked, setIsChecked }) => {
   const [city, setCity] = useState("Cracow");
-  const [isChecked, setIsChecked] = useState(false);
   const ref = useRef();
   useToggleOnOutsideClick(ref, toggle, setToggle);
 
@@ -65,6 +65,13 @@ const WeatherWidget = ({ toggle, setToggle }) => {
     console.log("checkbox", !isChecked);
   };
 
+  const onChangeCheckbox = () => {
+    updateCheckbox(database, "1", !isChecked)
+      .then(() => {
+        setIsChecked((prevState) => !prevState);
+      })
+      .catch(() => console.warn());
+  };
   // render
 
   if (weatherLoading) {
@@ -116,7 +123,8 @@ const WeatherWidget = ({ toggle, setToggle }) => {
               <input
                 type="checkbox"
                 id="check"
-                onChange={() => setIsChecked((prevState) => !prevState)}
+                onChange={() => onChangeCheckbox()}
+                checked={isChecked}
               />
               <label htmlFor="check">Refresh weather every 30s</label>
             </form>

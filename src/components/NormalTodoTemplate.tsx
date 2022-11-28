@@ -3,7 +3,7 @@ import styles from "./ItemTodo.module.scss";
 import { ReactComponent as Edit } from "../assets/edit.svg";
 import { ReactComponent as Del } from "../assets/delete.svg";
 
-interface INormalTodoTemlate {
+interface INormalTodoTemplate {
   isDone: boolean;
   content: string;
   onTodoClick: () => void;
@@ -13,7 +13,7 @@ interface INormalTodoTemlate {
   onTodoKeyDown: any;
 }
 
-const NormalTodoTemplate: React.FC<INormalTodoTemlate> = ({
+const NormalTodoTemplate: React.FC<INormalTodoTemplate> = ({
   isDone,
   content,
   onTodoClick,

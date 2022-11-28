@@ -1,6 +1,6 @@
 import React, { SyntheticEvent, useState } from "react";
 import NormalTodoTemplate from "./NormalTodoTemplate";
-import EditTodoTemplate from "./EditTodoTemplate.tsx";
+import EditTodoTemplate from "./EditTodoTemplate";
 
 interface ItemTodoInterface {
   content: string;
