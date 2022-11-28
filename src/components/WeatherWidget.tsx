@@ -11,8 +11,8 @@ const citiesListUrl = "/get-cities";
 
 const REVALIDATE_INTERVAL = 4_000;
 
-const WeatherWidget = ({ toggle, setToggle, isChecked, setIsChecked }) => {
-  const [city, setCity] = useState("Cracow");
+const WeatherWidget = ({ toggle, setToggle, isChecked, setIsChecked, city, setCity }) => {
+
   const ref = useRef();
   useToggleOnOutsideClick(ref, toggle, setToggle);
 
@@ -54,11 +54,15 @@ const WeatherWidget = ({ toggle, setToggle, isChecked, setIsChecked }) => {
         clearFetchInterval();
       }
     };
-  }, []);
+  }, [city]);
 
   const handleSubmitCity = (e) => {
     e.preventDefault();
-    setCity(e.target.value);
+    updateCity(database, "1", e.target.value).then(()=>{
+      setCity(e.target.value);
+    }).catch(()=>console.warn())
+
+
   };
 
   const handleSubmitCheckbox = () => {
@@ -66,11 +70,10 @@ const WeatherWidget = ({ toggle, setToggle, isChecked, setIsChecked }) => {
   };
 
   const onChangeCheckbox = () => {
-    updateCheckbox(database, "1", !isChecked)
-      .then(() => {
-        setIsChecked((prevState) => !prevState);
-      })
-      .catch(() => console.warn());
+    updateCheckbox(database, "1", !isChecked).then(()=>{
+      setIsChecked((prevState) => !prevState);
+    })
+
   };
   // render
 
@@ -110,7 +113,7 @@ const WeatherWidget = ({ toggle, setToggle, isChecked, setIsChecked }) => {
             <form onChange={handleSubmitCity}>
               <select name="cities">
                 <option value="" hidden={true}>
-                  Cracow
+                  {city}
                 </option>
                 {cityData.map((city) => (
                   <option key={city} value={city}>

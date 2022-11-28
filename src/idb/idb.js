@@ -3,6 +3,7 @@ import { openDB } from "idb";
 export let database = null;
 let storedTodos = [];
 let checkboxValue = null;
+let city = null
 
 export async function init() {
   const db = await openDB("Test", 1, {
@@ -18,13 +19,16 @@ export async function init() {
       });
       store.createIndex("date", "timeStamp");
     },
+
+
   });
 
   database = db;
   storedTodos = await db.getAllFromIndex("Todos", "date");
   checkboxValue = await db.get("Checkbox", "1");
+  city = await db.get("City", "1")
 
-  return { storedTodos, checkboxValue };
+  return { storedTodos, checkboxValue, city };
   // items = await db.getAll("Testowe");
 }
 

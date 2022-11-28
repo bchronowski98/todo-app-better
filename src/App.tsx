@@ -13,27 +13,24 @@ function App() {
   const [todos, setTodos] = useState([]);
   const [toggle, setToggle] = useState(false);
   const [editId, setEditId] = useState("");
-  const [testCheck, setTestCheck] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
+  const [city, setCity] = useState("Cracow");
 
   useEffect(() => {
     const initDB = async () => {
       await init()
-        .then((x: any) => {
-          console.log("database init");
-          let todos = x.storedTodos;
-          setTodos(todos.reverse());
-          setTestCheck(x.checkboxValue.isChecked);
+        .then((data: any) => {
+          setTodos(data.storedTodos.reverse());
+          setIsChecked(data.checkboxValue.isChecked);
+          setCity(data.city.city)
         })
         .catch(() => console.warn);
     };
 
     initDB().then(() => {
-      console.log(":)");
-      console.log(testCheck);
+      console.log("database initialized");
     });
 
-    // console.log(items);
-    // setTodos(items);
   }, []);
 
   useEffect(() => {
@@ -140,8 +137,10 @@ function App() {
       <WeatherWidget
         toggle={toggle}
         setToggle={setToggle}
-        isChecked={testCheck}
-        setIsChecked={setTestCheck}
+        isChecked={isChecked}
+        setIsChecked={setIsChecked}
+        city={city}
+        setCity={setCity}
       />
     </div>
   );
