@@ -1,18 +1,18 @@
 import React, { useState, useEffect, useRef } from "react";
 import styles from "./WeatherWidget.module.scss";
-import useFetch from "../hooks/useFetch.js";
-import useToggleOnOutsideClick from "../hooks/useToggleOnOutsideClick.jsx";
-import DisplayWeatherIcons from "./DisplayWeatherIcons.jsx";
+import useFetch from "../hooks/useFetch";
+import useToggleOnOutsideClick from "../hooks/useToggleOnOutsideClick";
+import DisplayWeatherIcons from "./DisplayWeatherIcons.tsx";
 import { fixTemperatureDisplay } from "../utils/formatData.js";
+import { database, updateCheckbox, updateCity } from "../idb/idb";
 
 const url = "https://live-weather.deno.dev";
 const citiesListUrl = "/get-cities";
 
 const REVALIDATE_INTERVAL = 4_000;
 
-const WeatherWidget = ({ toggle, setToggle }) => {
-  const [city, setCity] = useState("Cracow");
-  const [isChecked, setIsChecked] = useState(false);
+const WeatherWidget = ({ toggle, setToggle, isChecked, setIsChecked, city, setCity }) => {
+
   const ref = useRef();
   useToggleOnOutsideClick(ref, toggle, setToggle);
 
@@ -54,17 +54,27 @@ const WeatherWidget = ({ toggle, setToggle }) => {
         clearFetchInterval();
       }
     };
-  }, []);
+  }, [city]);
 
   const handleSubmitCity = (e) => {
     e.preventDefault();
-    setCity(e.target.value);
+    updateCity(database, "1", e.target.value).then(()=>{
+      setCity(e.target.value);
+    }).catch(()=>console.warn())
+
+
   };
 
   const handleSubmitCheckbox = () => {
     console.log("checkbox", !isChecked);
   };
 
+  const onChangeCheckbox = () => {
+    updateCheckbox(database, "1", !isChecked).then(()=>{
+      setIsChecked((prevState) => !prevState);
+    })
+
+  };
   // render
 
   if (weatherLoading) {
@@ -103,7 +113,7 @@ const WeatherWidget = ({ toggle, setToggle }) => {
             <form onChange={handleSubmitCity}>
               <select name="cities">
                 <option value="" hidden={true}>
-                  Cracow
+                  {city}
                 </option>
                 {cityData.map((city) => (
                   <option key={city} value={city}>
@@ -116,7 +126,8 @@ const WeatherWidget = ({ toggle, setToggle }) => {
               <input
                 type="checkbox"
                 id="check"
-                onChange={() => setIsChecked((prevState) => !prevState)}
+                onChange={() => onChangeCheckbox()}
+                checked={isChecked}
               />
               <label htmlFor="check">Refresh weather every 30s</label>
             </form>

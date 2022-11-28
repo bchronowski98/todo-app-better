@@ -1,19 +1,58 @@
 import styles from "./App.module.scss";
-import FormTodo from "./components/FormTodo.jsx";
-import React, { useState } from "react";
+import FormTodo from "./components/FormTodo";
+import React, { useState, useEffect } from "react";
 import { nanoid } from "nanoid";
-import ItemTodo from "./components/ItemTodo.jsx";
-import WeatherWidget from "./components/WeatherWidget.jsx";
+import ItemTodo from "./components/ItemTodo";
+import WeatherWidget from "./components/WeatherWidget";
 import { ReactComponent as ToggleButton } from "./assets/day-sunny.svg";
+import { init, updateTaskIdb, deleteTaskIdb, database } from "./idb/idb.js";
+
+// interface;
 
 function App() {
   const [todos, setTodos] = useState([]);
   const [toggle, setToggle] = useState(false);
   const [editId, setEditId] = useState("");
+  const [isChecked, setIsChecked] = useState(false);
+  const [city, setCity] = useState("Cracow");
+
+  useEffect(() => {
+    const initDB = async () => {
+      await init()
+        .then((data: any) => {
+          setTodos(data.storedTodos.reverse());
+          setIsChecked(data.checkboxValue.isChecked);
+          setCity(data.city.city)
+        })
+        .catch(() => console.warn);
+    };
+
+    initDB().then(() => {
+      console.log("database initialized");
+    });
+
+  }, []);
+
+  useEffect(() => {
+    todos.map((todo) => {
+      updateTaskIdb(
+        database,
+        todo.id,
+        todo.timeStamp,
+        todo.content,
+        todo.isDone
+      );
+    });
+  }, [todos]);
 
   const addTodo = (todoObject) => {
     setTodos((prevTodos) => [
-      { id: nanoid(3), content: todoObject },
+      {
+        id: nanoid(3),
+        timeStamp: new Date().getTime(),
+        content: todoObject,
+        isDone: false,
+      },
       ...prevTodos,
     ]);
   };
@@ -22,15 +61,31 @@ function App() {
     setToggle((prevState) => !prevState);
   };
 
-  const removeTodo = (id) => {
+  const removeTodo = (id: string) => {
     setTodos((prevTodos) => prevTodos.filter((todo) => id !== todo.id));
+    deleteTaskIdb(database, id)
+      .then(() => {
+        console.log("task deleted", id);
+      })
+      .catch(console.warn);
   };
 
-  const editTodo = (id, newTodo) => {
+  const editTodo = (id: string, newTodo: string) => {
     setTodos((prevTodos) =>
       prevTodos.map((todo) => {
         if (id === todo.id) {
           return { ...todo, content: newTodo };
+        }
+        return todo;
+      })
+    );
+  };
+
+  const changeDone = (id, isDone) => {
+    setTodos((prevTodos) =>
+      prevTodos.map((todo) => {
+        if (id === todo.id) {
+          return { ...todo, isDone: isDone };
         }
         return todo;
       })
@@ -66,8 +121,10 @@ function App() {
                     key={todo.id}
                     id={todo.id}
                     content={todo.content}
+                    isDone={todo.isDone}
                     removeTodo={removeTodo}
                     editTodo={editTodo}
+                    changeDone={changeDone}
                     setEditId={setEditId}
                     editId={editId}
                   />
@@ -77,7 +134,14 @@ function App() {
           </div>
         </div>
       </div>
-      <WeatherWidget toggle={toggle} setToggle={setToggle} />
+      <WeatherWidget
+        toggle={toggle}
+        setToggle={setToggle}
+        isChecked={isChecked}
+        setIsChecked={setIsChecked}
+        city={city}
+        setCity={setCity}
+      />
     </div>
   );
 }
